@@ -1,0 +1,4342 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>tend · Riverbend Realty</title>
+<meta name="description" content="Tend Solo — the operating brain for an autonomous business." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+/* ════════════════════════════════════════════════════════════
+   tend Solo · single-file rebuild · v1 (2026-05-18)
+   Dark editorial-blueprint, gold accent, IBM Plex.
+   Same IA + 10-block system as the prototype, tighter rhythm,
+   mobile baseline, polished transitions.
+   ════════════════════════════════════════════════════════════ */
+
+/* DARK (default) */
+:root, html[data-theme="dark"] {
+  --bg:          #0A0B0D;
+  --bg-2:        #101215;
+  --bg-3:        #16191D;
+  --bg-4:        #1A1E22;
+  --line:        rgba(255,255,255,0.08);
+  --line-2:      rgba(255,255,255,0.16);
+  --line-hi:     rgba(255,255,255,0.28);
+  --fg:          #ECE7DE;
+  --fg-dim:      rgba(236,231,222,0.62);
+  --fg-mute:     rgba(236,231,222,0.38);
+  --fg-ghost:    rgba(236,231,222,0.18);
+  --card-bg:     transparent;
+  --card-bg-2:   rgba(255,255,255,0.018);
+  --accent:      #D4A659;
+  --accent-ink:  #14150F;
+  --accent-soft: rgba(212,166,89,0.12);
+  --accent-line: rgba(212,166,89,0.40);
+  --positive:    #7BB290;
+  --positive-soft: rgba(123,178,144,0.12);
+  --warn:        #D4A659;
+  --warn-soft:   rgba(212,166,89,0.10);
+  --danger:      #D87359;
+  --danger-soft: rgba(216,115,89,0.12);
+  --sans: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', monospace;
+  --serif: 'Times New Roman', Georgia, serif;
+}
+
+/* LIGHT — cream + ink hairlines */
+html[data-theme="light"] {
+  --bg:          #ECEAE5;
+  --bg-2:        #E6E3DC;
+  --bg-3:        #DCD8CE;
+  --bg-4:        #F4F2EC;
+  --line:        rgba(26,26,24,0.07);
+  --line-2:      rgba(26,26,24,0.16);
+  --line-hi:     #1A1A18;
+  --fg:          #1A1A18;
+  --fg-dim:      rgba(26,26,24,0.62);
+  --fg-mute:     rgba(26,26,24,0.46);
+  --fg-ghost:    rgba(26,26,24,0.22);
+  --card-bg:     transparent;
+  --card-bg-2:   #F2F0EA;
+  --accent:      #B5743A;
+  --accent-ink:  #F4F2EC;
+  --accent-soft: rgba(181,116,58,0.10);
+  --accent-line: rgba(181,116,58,0.40);
+  --positive:    #4A8762;
+  --positive-soft: rgba(74,135,98,0.10);
+  --warn:        #B5743A;
+  --warn-soft:   rgba(181,116,58,0.10);
+  --danger:      #A8442C;
+  --danger-soft: rgba(168,68,44,0.10);
+}
+
+* { box-sizing: border-box; }
+em, i, blockquote, cite, address { font-style: normal; }
+html, body { margin: 0; padding: 0; height: 100%; background: var(--bg); color: var(--fg); }
+body {
+  font-family: var(--sans);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow: hidden;
+}
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; padding: 0; }
+input, textarea { font: inherit; color: inherit; outline: none; }
+
+.mono { font-family: var(--mono); }
+.serif {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent);
+  letter-spacing: 0;
+}
+
+/* Scrollbar — slim */
+*::-webkit-scrollbar { width: 8px; height: 8px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb { background: var(--line-2); border-radius: 4px; }
+*::-webkit-scrollbar-thumb:hover { background: var(--line-hi); }
+
+/* ────────────────────────────────────────
+   META STRIP — the §NN / NAME / DESC pattern
+   ──────────────────────────────────────── */
+.meta, .meta-strip {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.meta strong, .meta-strip strong { color: var(--fg); font-weight: 500; }
+.meta em, .meta-strip em { color: var(--accent); font-style: normal; font-weight: 500; }
+.meta .sep, .meta-strip .sep { color: var(--fg-ghost); }
+
+.hair { height: 1px; background: var(--line); width: 100%; }
+
+/* ────────────────────────────────────────
+   APP SHELL
+   ──────────────────────────────────────── */
+#app {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  height: 100vh;
+  width: 100vw;
+  background: var(--bg);
+  transition: grid-template-columns 200ms cubic-bezier(0.4,0,0.2,1);
+}
+#app.collapsed { grid-template-columns: 56px 1fr; }
+
+/* ────────────────────────────────────────
+   SIDEBAR
+   ──────────────────────────────────────── */
+.sidebar {
+  border-right: 1px solid var(--line);
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+html[data-theme="dark"] .sidebar { background: rgba(255,255,255,0.012); }
+
+.sidebar-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--line);
+  height: 56px;
+  flex-shrink: 0;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 14px;
+  letter-spacing: 0.02em;
+}
+.brand .dot {
+  width: 18px; height: 14px;
+  flex-shrink: 0;
+  background-image:
+    linear-gradient(var(--fg), var(--fg)),
+    linear-gradient(var(--fg), var(--fg)),
+    linear-gradient(var(--fg), var(--fg));
+  background-repeat: no-repeat;
+  background-size: 100% 3px, 100% 3px, 35% 6px;
+  background-position: 0 0, 0 5px, 50% 100%;
+}
+.collapse-btn {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--fg-mute);
+  letter-spacing: 0.06em;
+  padding: 4px 8px;
+  border: 1px solid var(--line);
+  transition: color 150ms, border-color 150ms;
+}
+.collapse-btn:hover { color: var(--fg); border-color: var(--line-2); }
+#app.collapsed .brand span:not(.dot) { display: none; }
+#app.collapsed .collapse-btn { padding: 4px 6px; }
+
+.sidebar-body { flex: 1; overflow-y: auto; padding: 12px 0; }
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 18px;
+  color: var(--fg-dim);
+  font-size: 13.5px;
+  letter-spacing: -0.005em;
+  border-left: 2px solid transparent;
+  transition: color 120ms, background 120ms, border-color 120ms;
+  text-align: left;
+  line-height: 1.2;
+}
+.nav-btn:hover { color: var(--fg); background: rgba(255,255,255,0.025); }
+html[data-theme="light"] .nav-btn:hover { background: rgba(26,26,24,0.04); }
+.nav-btn.active {
+  color: var(--fg);
+  border-left-color: var(--accent);
+  background: var(--accent-soft);
+}
+.nav-btn .icon {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--fg-mute);
+  width: 14px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.nav-btn.active .icon { color: var(--accent); }
+.nav-btn .badge {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  background: var(--accent);
+  color: var(--accent-ink);
+  padding: 2px 6px;
+}
+#app.collapsed .nav-btn span:not(.icon):not(.badge) { display: none; }
+#app.collapsed .nav-btn { justify-content: center; padding: 10px 0; }
+#app.collapsed .nav-btn .badge { display: none; }
+
+/* nested sessions */
+.nav-sub { padding: 4px 0 8px 32px; }
+#app.collapsed .nav-sub { display: none; }
+.nav-sub .nav-sub-head {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  padding: 6px 0 4px;
+}
+.nav-sub-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 0 6px 12px;
+  margin-left: -8px;
+  color: var(--fg-dim);
+  font-size: 12.5px;
+  border-left: 1px solid var(--line);
+  transition: color 120ms, border-color 120ms;
+  text-align: left;
+}
+.nav-sub-item:hover { color: var(--fg); }
+.nav-sub-item.active { color: var(--accent); border-left-color: var(--accent); }
+.nav-sub-item .dot-tiny {
+  width: 4px; height: 4px;
+  background: var(--fg-mute);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.nav-sub-item.active .dot-tiny { background: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+
+/* workspace footer */
+.sidebar-foot {
+  border-top: 1px solid var(--line);
+  padding: 16px 18px 18px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  color: var(--fg-mute);
+  line-height: 1.5;
+  flex-shrink: 0;
+}
+.sidebar-foot .ws-name {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  margin-bottom: 6px;
+}
+.sidebar-foot .ws-owner { color: var(--fg); margin-bottom: 2px; }
+.sidebar-foot .ws-plan { color: var(--accent); white-space: nowrap; }
+#app.collapsed .sidebar-foot { display: none; }
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--fg-mute);
+  padding: 5px 9px;
+  border: 1px solid var(--line);
+  margin-top: 10px;
+  text-transform: uppercase;
+  transition: color 150ms, border-color 150ms;
+}
+.theme-toggle:hover { color: var(--fg); border-color: var(--line-2); }
+.theme-toggle .sw {
+  width: 22px; height: 12px;
+  background: var(--bg-3);
+  border: 1px solid var(--line-2);
+  position: relative;
+  flex-shrink: 0;
+}
+.theme-toggle .sw::after {
+  content: ""; position: absolute; top: 1px; width: 8px; height: 8px;
+  background: var(--accent);
+  transition: left 180ms ease;
+  left: 1px;
+}
+html[data-theme="light"] .theme-toggle .sw::after { left: 11px; }
+
+.restart-tour {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 6px 0;
+  background: transparent;
+  border: none;
+  border-top: 1px solid var(--line);
+  color: var(--fg-mute);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: left;
+  cursor: pointer;
+  transition: color 150ms;
+}
+.restart-tour:hover { color: var(--accent); }
+
+/* ────────────────────────────────────────
+   MAIN PANE
+   ──────────────────────────────────────── */
+.main {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* ────────────────────────────────────────
+   BUTTONS
+   ──────────────────────────────────────── */
+.btn {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  padding: 8px 14px;
+  color: var(--fg);
+  border: 1px solid var(--line-2);
+  transition: all 150ms;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn:hover { border-color: var(--fg-dim); }
+.btn.primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: var(--accent);
+}
+.btn.primary:hover { filter: brightness(1.08); }
+.btn.ghost { border-color: var(--line); color: var(--fg-dim); }
+.btn.ghost:hover { color: var(--fg); border-color: var(--line-2); }
+.btn.reject { border-color: var(--danger); color: var(--danger); }
+.btn.reject:hover { background: var(--danger-soft); }
+
+.btn-mini {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  padding: 5px 10px;
+  color: var(--fg-dim);
+  border: 1px solid var(--line);
+  transition: color 150ms, border-color 150ms;
+}
+.btn-mini:hover { color: var(--fg); border-color: var(--line-2); }
+.btn-mini.primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: var(--accent);
+}
+.btn-mini.ghost { background: transparent; }
+
+/* Pills */
+.pill {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border: 1px solid var(--line-2);
+  color: var(--fg-dim);
+}
+.pill.accent { color: var(--accent); border-color: var(--accent-line); background: var(--accent-soft); }
+.pill.warn { color: var(--warn); border-color: var(--accent-line); background: var(--warn-soft); }
+.pill.pos { color: var(--positive); border-color: var(--positive); background: var(--positive-soft); }
+.pill.danger { color: var(--danger); border-color: var(--danger); background: var(--danger-soft); }
+
+/* ────────────────────────────────────────
+   PAGE-LEVEL TYPE
+   ──────────────────────────────────────── */
+.section-title {
+  font-family: var(--sans);
+  font-weight: 300;
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+  font-size: 40px;
+  margin: 14px 0 6px;
+  text-wrap: pretty;
+}
+.section-sub {
+  font-size: 13.5px;
+  color: var(--fg-mute);
+  max-width: 62ch;
+  line-height: 1.55;
+  margin: 0 0 28px;
+}
+
+/* ────────────────────────────────────────
+   CHAT PAGE — chat-left + surface-right
+   ──────────────────────────────────────── */
+.chat-page {
+  display: grid;
+  grid-template-columns: var(--chat-w, 1fr) 6px var(--surface-w, 1fr);
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+.chat-page.solo { grid-template-columns: 1fr; }
+
+.chat-pane {
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 280px;
+}
+.chat-page.solo .chat-pane { border-right: none; }
+
+.chat-head {
+  padding: 14px 22px 12px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  flex-shrink: 0;
+}
+.chat-head .session-meta { display: flex; flex-direction: column; gap: 4px; }
+.chat-head .session-title { font-size: 15px; font-weight: 500; }
+.chat-head .session-sub {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: var(--fg-mute);
+  text-transform: uppercase;
+}
+
+.chat-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 22px 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.msg { max-width: 78%; font-size: 14px; line-height: 1.55; }
+.msg .who {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  margin-bottom: 6px;
+}
+.msg.user { align-self: flex-end; text-align: right; }
+.msg.user .who { color: var(--accent); }
+.msg .bubble {
+  padding: 11px 14px;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  color: var(--fg);
+  white-space: pre-wrap;
+}
+.msg.user .bubble {
+  background: var(--accent-soft);
+  border-color: var(--accent-line);
+}
+
+.chat-input {
+  border-top: 1px solid var(--line);
+  padding: 12px 22px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  background: var(--bg);
+}
+.chat-input textarea {
+  flex: 1;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  color: var(--fg);
+  padding: 10px 12px;
+  font-family: var(--sans);
+  font-size: 13.5px;
+  resize: none;
+  min-height: 38px;
+  max-height: 100px;
+}
+.chat-input textarea:focus { border-color: var(--line-2); }
+.chat-input .send {
+  background: var(--accent);
+  color: var(--accent-ink);
+  padding: 9px 14px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  transition: filter 150ms;
+}
+.chat-input .send:hover { filter: brightness(1.08); }
+
+/* Divider drag handle */
+.divider {
+  cursor: col-resize;
+  background: transparent;
+  position: relative;
+  user-select: none;
+}
+.divider::before {
+  content: "";
+  position: absolute;
+  left: 50%; top: 0; bottom: 0;
+  width: 1px;
+  background: var(--line);
+  transform: translateX(-0.5px);
+}
+.divider:hover::before { background: var(--line-2); }
+.divider::after {
+  content: "";
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 2px; height: 32px;
+  background: var(--line-hi);
+  transform: translate(-50%,-50%);
+  opacity: 0;
+  transition: opacity 150ms;
+}
+.divider:hover::after { opacity: 1; }
+
+/* ────────────────────────────────────────
+   OPERATING SURFACE
+   ──────────────────────────────────────── */
+.surface {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 300px;
+}
+.surface-head {
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: stretch;
+  height: 56px;
+  flex-shrink: 0;
+}
+.surface-tabs { display: flex; align-items: stretch; overflow-x: auto; }
+.surface-tab {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  color: var(--fg-mute);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-right: 1px solid var(--line);
+  position: relative;
+  transition: color 150ms, background 150ms;
+  white-space: nowrap;
+}
+.surface-tab:hover { color: var(--fg-dim); }
+.surface-tab.active {
+  color: var(--fg);
+  background: var(--bg-2);
+}
+html[data-theme="light"] .surface-tab.active { background: transparent; }
+.surface-tab.active::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: var(--accent);
+}
+.surface-tab .tab-count {
+  margin-left: 7px;
+  color: var(--fg-mute);
+  font-size: 10px;
+}
+.surface-head .right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  padding: 0 18px;
+  gap: 8px;
+}
+.surface-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 22px 28px 32px;
+  background: var(--bg);
+}
+.surface-meta {
+  margin-bottom: 22px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+/* surface footer · live sync indicator */
+.surface-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 28px;
+  border-top: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--fg-mute);
+}
+.surface-foot .sync { color: var(--accent); display: flex; align-items: center; gap: 8px; }
+.surface-foot .sync .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 var(--accent-soft); }
+  50% { opacity: 0.55; box-shadow: 0 0 0 4px var(--accent-soft); }
+}
+
+/* ────────────────────────────────────────
+   BLOCK PRIMITIVES
+   ──────────────────────────────────────── */
+.block { margin-bottom: 26px; }
+.block:last-child { margin-bottom: 0; }
+.block-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+.block-head h3 {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  margin: 0;
+}
+.block-head .kicker {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* doc */
+.block-doc { color: var(--fg-dim); font-size: 14px; line-height: 1.65; }
+.block-doc h1, .block-doc h2, .block-doc h3 { color: var(--fg); font-weight: 500; letter-spacing: -0.01em; margin: 18px 0 8px; }
+.block-doc h1 { font-size: 22px; margin-top: 0; }
+.block-doc h2 { font-size: 17px; }
+.block-doc h3 { font-size: 13px; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.04em; color: var(--fg-mute); font-weight: 500; }
+.block-doc p { margin: 0 0 10px; }
+.block-doc ul { margin: 0 0 12px; padding-left: 18px; }
+.block-doc li { margin-bottom: 4px; }
+.block-doc code { font-family: var(--mono); font-size: 12.5px; color: var(--accent); background: rgba(212,166,89,0.07); padding: 1px 5px; }
+.block-doc strong { color: var(--fg); font-weight: 500; }
+
+/* kpi */
+.block-kpi {
+  display: grid;
+  grid-template-columns: repeat(var(--kpi-cols, 4), 1fr);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.block-kpi .cell {
+  padding: 22px 24px;
+  border-right: 1px solid var(--line);
+}
+.block-kpi .cell:last-child { border-right: none; }
+.block-kpi .cell .k {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  margin-bottom: 10px;
+}
+.block-kpi .cell .v {
+  font-family: var(--sans);
+  font-weight: 300;
+  font-size: 32px;
+  letter-spacing: -0.025em;
+  line-height: 1;
+  color: var(--fg);
+}
+.block-kpi .cell .v .unit { font-size: 16px; color: var(--fg-mute); margin-left: 4px; font-weight: 400; }
+.block-kpi .cell .delta {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  margin-top: 8px;
+  color: var(--fg-mute);
+}
+.block-kpi .cell .delta.pos { color: var(--positive); }
+.block-kpi .cell .delta.warn { color: var(--warn); }
+
+/* spec */
+.block-spec {
+  display: grid;
+  grid-template-columns: repeat(var(--spec-cols, 3), 1fr);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.block-spec .cell {
+  padding: 16px 20px;
+  border-right: 1px solid var(--line);
+  font-family: var(--mono);
+}
+.block-spec .cell:last-child { border-right: none; }
+.block-spec .cell .k {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  margin-bottom: 6px;
+}
+.block-spec .cell .v { font-size: 13px; color: var(--fg); }
+.block-spec .cell.is-edit { position: relative; cursor: pointer; transition: background 150ms; }
+.block-spec .cell.is-edit:hover { background: var(--bg-2); }
+.block-spec .cell .pencil {
+  position: absolute; top: 10px; right: 12px;
+  font-size: 11px; color: var(--accent); opacity: 0.7;
+}
+
+/* matrix */
+.block-matrix {
+  display: grid;
+  grid-template-columns: repeat(var(--matrix-cols, 3), 1fr);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.block-matrix .cell {
+  padding: 22px 22px 18px;
+  border-right: 1px solid var(--line);
+  min-height: 140px;
+}
+.block-matrix.cols-3 .cell:nth-child(3n) { border-right: none; }
+.block-matrix.cols-2 .cell:nth-child(2n) { border-right: none; }
+.block-matrix .cell .num {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: var(--fg-mute);
+  margin-bottom: 12px;
+}
+.block-matrix .cell h4 {
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0 0 6px;
+  letter-spacing: -0.005em;
+  line-height: 1.3;
+}
+.block-matrix .cell p {
+  font-size: 12.5px;
+  color: var(--fg-dim);
+  line-height: 1.55;
+  margin: 0;
+}
+.block-matrix .cell .foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+}
+.block-matrix .cell .foot .foot-label { color: var(--accent); flex: 1; }
+.block-matrix .cell .foot .foot-time { color: var(--fg-mute); }
+
+/* table */
+.block-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+.block-table th, .block-table td {
+  text-align: left;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.block-table th {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  font-weight: 500;
+  background: var(--bg-2);
+}
+html[data-theme="light"] .block-table th { background: var(--card-bg-2); }
+.block-table tbody tr:last-child td { border-bottom: none; }
+.block-table tbody tr:hover td { background: var(--bg-2); }
+html[data-theme="light"] .block-table tbody tr:hover td { background: var(--card-bg-2); }
+
+/* code */
+.block-code {
+  background: #06070A;
+  border: 1px solid var(--line);
+  padding: 18px 20px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: var(--fg-dim);
+  overflow-x: auto;
+}
+html[data-theme="light"] .block-code { background: var(--bg-2); color: var(--fg); }
+
+/* approval */
+.block-approval {
+  border: 1px solid var(--accent-line);
+  border-left-width: 3px;
+  background: var(--accent-soft);
+  padding: 18px 20px;
+}
+.block-approval .head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.block-approval .head .label {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.block-approval h4 {
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0 0 6px;
+  letter-spacing: -0.005em;
+}
+.block-approval p {
+  font-size: 13px;
+  color: var(--fg-dim);
+  line-height: 1.55;
+  margin: 0 0 14px;
+}
+.block-approval .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.block-approval .actions .btn { font-size: 11px; padding: 7px 14px; }
+
+/* checklist */
+.block-checklist {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 6px 20px;
+}
+.block-checklist .item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 13.5px;
+}
+.block-checklist .item:last-child { border-bottom: none; }
+.block-checklist .item .check {
+  width: 14px; height: 14px;
+  border: 1px solid var(--line-2);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.block-checklist .item.done .check {
+  background: var(--accent);
+  border-color: var(--accent);
+  position: relative;
+}
+.block-checklist .item.done .check::after {
+  content: "✓"; color: var(--accent-ink); font-size: 11px;
+  position: absolute; inset: 0; line-height: 12px; text-align: center;
+}
+.block-checklist .item.done .label { color: var(--fg-mute); text-decoration: line-through; }
+.block-checklist .item .label { color: var(--fg); }
+.block-checklist .item .meta {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--fg-mute);
+  letter-spacing: 0.04em;
+}
+
+/* approvals summary card */
+.block-approvals-summary {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  border-left: 2px solid var(--accent);
+  padding: 0;
+}
+.block-approvals-summary .block-head {
+  padding: 16px 18px 12px;
+  margin-bottom: 0;
+}
+.block-approvals-summary .block-head h3 { font-size: 15px; }
+.block-approvals-summary .kicker.link {
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  padding: 0 2px;
+  transition: text-decoration 150ms;
+}
+.block-approvals-summary .kicker.link:hover { text-decoration: underline; }
+.approvals-summary-list { display: flex; flex-direction: column; }
+.as-row {
+  text-align: left;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: var(--fg);
+  transition: background 150ms;
+}
+.as-row:hover { background: var(--bg-2); }
+html[data-theme="light"] .as-row:hover { background: var(--card-bg-2); }
+.as-row.prio-high { border-left: 2px solid var(--accent); }
+.as-title { font-size: 13px; font-weight: 500; line-height: 1.35; }
+.as-meta { font-size: 10.5px; color: var(--fg-mute); font-family: var(--mono); letter-spacing: 0.04em; }
+.as-meta .sep { margin: 0 5px; opacity: 0.5; }
+.summary-more {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 12px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: transparent;
+  border: none;
+  border-top: 1px solid var(--line);
+  cursor: pointer;
+  transition: background 150ms;
+}
+.summary-more:hover { background: var(--bg-2); }
+html[data-theme="light"] .summary-more:hover { background: var(--card-bg-2); }
+
+/* outputs feed */
+.block-outputs-feed {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.block-outputs-feed .block-head { padding: 14px 18px 10px; margin-bottom: 0; }
+.outputs-list { display: flex; flex-direction: column; }
+.output-row {
+  display: grid;
+  grid-template-columns: 95px 1.1fr 1.4fr 1.4fr;
+  gap: 14px;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--line);
+  font-size: 12px;
+  align-items: baseline;
+}
+.output-row:last-child { border-bottom: none; }
+.or-when { font-family: var(--mono); font-size: 10.5px; color: var(--fg-mute); letter-spacing: 0.04em; }
+.or-from { font-weight: 500; }
+.or-what { color: var(--fg-dim); }
+.or-where {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--accent);
+  white-space: normal;
+  line-height: 1.4;
+  word-break: break-word;
+}
+.output-row.kind-approval .or-where { color: var(--warn); }
+.output-row.kind-email .or-where { color: var(--positive); }
+
+/* ────────────────────────────────────────
+   DATA LAYER PAGE
+   ──────────────────────────────────────── */
+.data-page {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+.connectors-bar {
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  padding: 10px 24px;
+  gap: 10px;
+  height: 56px;
+  flex-shrink: 0;
+  overflow-x: auto;
+}
+.connectors-bar .label {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+.connector-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--fg-dim);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  transition: color 150ms, border-color 150ms;
+  flex-shrink: 0;
+}
+.connector-chip:hover { color: var(--fg); border-color: var(--line-2); }
+.connector-chip .status-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--positive);
+  box-shadow: 0 0 0 2px var(--positive-soft);
+  flex-shrink: 0;
+}
+.connector-chip.off { color: var(--fg-mute); }
+.connector-chip.off .status-dot { background: var(--fg-ghost); box-shadow: none; }
+.connector-chip.add { color: var(--accent); border-color: var(--accent-line); border-style: dashed; cursor: pointer; }
+
+.data-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: var(--data-chat-w, 380px) 6px 1fr;
+  overflow: hidden;
+  min-height: 0;
+}
+.data-md {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.data-md-head {
+  border-bottom: 1px solid var(--line);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  flex-shrink: 0;
+  gap: 12px;
+}
+.data-md-tabs { display: flex; gap: 0; flex: 1; overflow-x: auto; min-width: 0; }
+.md-tab {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  padding: 6px 12px;
+  color: var(--fg-mute);
+  border: 1px solid var(--line);
+  border-right: none;
+  white-space: nowrap;
+  transition: color 150ms, background 150ms;
+}
+.md-tab:last-child { border-right: 1px solid var(--line); }
+.md-tab:hover { color: var(--fg-dim); }
+.md-tab.active { color: var(--accent); border-color: var(--accent-line); background: var(--accent-soft); }
+.data-md-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px 36px 40px;
+  max-width: 920px;
+}
+.data-md-body .file-meta {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  margin-bottom: 22px;
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.data-md-body .file-meta strong { color: var(--accent); font-weight: 500; }
+
+/* ────────────────────────────────────────
+   AUTOMATIONS PAGE
+   ──────────────────────────────────────── */
+.automations-page { flex: 1; overflow-y: auto; padding: 32px 40px 60px; }
+.automations-page .meta-strip { padding-bottom: 14px; border-bottom: 1px solid var(--line); margin-bottom: 6px; }
+.automations-page h2.section-title { font-size: 36px; line-height: 1.15; }
+
+.auto-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--line);
+  margin-top: 24px;
+}
+.auto-tab {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 12px 18px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  color: var(--fg-mute);
+  margin-bottom: -1px;
+  transition: color 150ms, border-color 150ms;
+}
+.auto-tab .lbl {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.auto-tab .cnt {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--fg-mute);
+  background: var(--bg-3);
+  padding: 1px 6px;
+  min-width: 18px;
+  text-align: center;
+}
+.auto-tab.tone-warn .cnt { background: var(--warn-soft); color: var(--warn); }
+.auto-tab:hover { color: var(--fg); }
+.auto-tab.active { color: var(--fg); border-bottom-color: var(--accent); }
+.auto-tab.active .cnt { background: var(--accent-soft); color: var(--accent); }
+
+.auto-page-body {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 28px;
+  margin-top: 24px;
+  align-items: start;
+}
+.auto-left { min-width: 0; }
+
+.auto-list { display: flex; flex-direction: column; }
+.auto-row {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr 1.6fr 1.2fr auto;
+  gap: 16px;
+  padding: 18px 20px;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-bottom: none;
+  text-align: left;
+  cursor: pointer;
+  align-items: center;
+  color: inherit;
+  transition: background 150ms;
+}
+.auto-row:last-child { border-bottom: 1px solid var(--line); }
+.auto-row:hover { background: var(--bg-2); }
+html[data-theme="light"] .auto-row:hover { background: var(--card-bg-2); }
+.auto-row .name .t { font-weight: 500; font-size: 14px; }
+.auto-row .name .d { font-size: 12px; color: var(--fg-mute); margin-top: 3px; }
+.auto-row .k {
+  display: block;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  margin-bottom: 4px;
+}
+.auto-row .schedule, .auto-row .next, .auto-row .output { font-size: 12px; font-family: var(--mono); color: var(--fg-dim); letter-spacing: 0.02em; }
+.auto-row .output .v { font-size: 12px; line-height: 1.4; font-family: var(--sans); color: var(--fg); }
+.auto-row .output .where { font-size: 10.5px; color: var(--accent); margin-top: 3px; font-family: var(--mono); }
+
+.auto-new {
+  margin-top: 12px;
+  width: 100%;
+  padding: 14px 18px;
+  background: transparent;
+  border: 1px dashed var(--line-2);
+  text-align: left;
+  color: var(--fg-mute);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 150ms, border-color 150ms;
+}
+.auto-new:hover { border-color: var(--accent-line); color: var(--accent); }
+.auto-new .plus { font-size: 18px; line-height: 1; }
+
+/* automation detail */
+.seq-map {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 0;
+  margin-top: 16px;
+  display: grid;
+}
+.seq-step {
+  position: relative;
+  padding: 18px 18px;
+  border-right: 1px solid var(--line);
+}
+.seq-step:last-child { border-right: none; }
+.seq-step .n {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+}
+.seq-step .t { font-size: 13px; color: var(--fg); margin-bottom: 4px; font-weight: 500; }
+.seq-step .sub { font-size: 11.5px; color: var(--fg-mute); line-height: 1.4; }
+.seq-step.gate { border-top: 2px solid var(--warn); }
+.seq-step.gate .n { color: var(--warn); }
+
+.block-output {
+  border: 1px solid var(--accent-line);
+  border-left: 3px solid var(--accent);
+  padding: 18px 20px;
+  margin-top: 12px;
+  background: var(--accent-soft);
+}
+.block-output .produces { margin-bottom: 14px; }
+.block-output .produces .lbl {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  margin-bottom: 4px;
+}
+.block-output .produces .val { font-size: 14px; font-weight: 500; }
+.output-spec {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}
+.output-spec .k {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  margin-bottom: 3px;
+}
+.output-spec .v { font-size: 12.5px; }
+
+/* Keeper panel */
+.keeper-panel {
+  border: 1px solid var(--line);
+  background: var(--card-bg-2);
+  padding: 22px;
+  position: sticky;
+  top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+html[data-theme="light"] .keeper-panel { background: transparent; }
+.keeper-panel .meta { font-size: 10px; }
+.keeper-title { font-weight: 500; font-size: 15px; margin-top: 4px; }
+.keeper-sub { font-size: 12.5px; color: var(--fg-mute); line-height: 1.5; margin: 0; }
+.keeper-suggest { display: flex; flex-direction: column; gap: 8px; }
+.keeper-chip {
+  text-align: left;
+  padding: 10px 12px;
+  font-size: 12.5px;
+  line-height: 1.4;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--fg);
+  cursor: pointer;
+  transition: color 150ms, border-color 150ms;
+}
+.keeper-chip:hover { border-color: var(--accent-line); color: var(--accent); }
+.keeper-chat { border-top: 1px solid var(--line); padding-top: 14px; }
+.k-msg { margin-bottom: 8px; }
+.k-from {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.k-bubble {
+  font-size: 12.5px;
+  line-height: 1.55;
+  padding: 10px 12px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+}
+.keeper-input {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}
+.keeper-input textarea {
+  font-size: 12.5px;
+  resize: none;
+  padding: 10px 12px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--fg);
+  min-height: 38px;
+}
+.keeper-input textarea:focus { border-color: var(--accent-line); }
+.send-mini {
+  background: var(--accent);
+  color: var(--accent-ink);
+  padding: 0 14px;
+  font-weight: 600;
+  min-width: 48px;
+  transition: filter 150ms;
+}
+.send-mini:hover { filter: brightness(1.08); }
+
+/* approvals inbox · full */
+.approvals-inbox-full,
+.outputs-log-full {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  margin-top: 16px;
+}
+.approvals-inbox-full .approval-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--line);
+}
+.approvals-inbox-full .approval-row:last-child { border-bottom: none; }
+.approvals-inbox-full .approval-row.prio-high { border-left: 2px solid var(--accent); }
+.ar-meta {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+}
+.ar-meta .from { color: var(--accent); }
+.ar-title { font-weight: 500; font-size: 14px; }
+.ar-preview { font-size: 12.5px; color: var(--fg-dim); line-height: 1.55; }
+.ar-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+.ar-channel {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  margin-right: auto;
+}
+.approvals-inbox-full .ar-actions .btn-mini { min-width: 90px; padding: 6px 14px; font-size: 11px; text-align: center; justify-content: center; }
+.approvals-inbox-full .ar-actions .btn-mini.primary { min-width: 110px; }
+.approvals-inbox-full .empty,
+.outputs-log-full .empty {
+  padding: 60px 40px;
+  text-align: center;
+  color: var(--fg-mute);
+  font-style: italic;
+}
+
+/* ────────────────────────────────────────
+   DASHBOARD PAGE
+   ──────────────────────────────────────── */
+.dashboard-page { flex: 1; overflow-y: auto; padding: 32px 40px 60px; }
+.dashboard-page > .meta-strip { margin-bottom: 6px; }
+.dashboard-page h2.section-title { font-size: 36px; line-height: 1.15; margin: 14px 0 6px; }
+.dashboard-page .section-sub { margin-bottom: 28px; }
+
+.dash-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 36px 24px;
+  margin-bottom: 24px;
+}
+.dash-grid .block { margin: 0; }
+.dash-w-12 { grid-column: span 12; }
+.dash-w-8 { grid-column: span 8; }
+.dash-w-6 { grid-column: span 6; }
+.dash-w-4 { grid-column: span 4; }
+.dash-w-3 { grid-column: span 3; }
+
+.history-strip {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  flex-wrap: wrap;
+}
+.history-strip .versions { display: flex; gap: 0; }
+.history-strip .v {
+  padding: 5px 10px;
+  border: 1px solid var(--line);
+  border-right: none;
+  color: var(--fg-dim);
+  transition: color 150ms;
+  cursor: pointer;
+}
+.history-strip .v:last-child { border-right: 1px solid var(--line); }
+.history-strip .v:hover { color: var(--fg); }
+.history-strip .v.current { color: var(--accent); border-color: var(--accent-line); background: var(--accent-soft); }
+
+/* ────────────────────────────────────────
+   ACCOUNT PAGE
+   ──────────────────────────────────────── */
+.account-page { flex: 1; overflow-y: auto; padding: 32px 40px 60px; max-width: 1100px; }
+.account-page .meta-strip { padding-bottom: 14px; border-bottom: 1px solid var(--line); margin-bottom: 28px; }
+.account-page h2 {
+  font-family: var(--sans);
+  font-size: 32px;
+  font-weight: 300;
+  letter-spacing: -0.025em;
+  margin: 0 0 24px;
+}
+
+/* ────────────────────────────────────────
+   WELCOME OVERLAY
+   ──────────────────────────────────────── */
+.welcome-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10,11,13,0.84);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fade-in 200ms ease;
+}
+html[data-theme="light"] .welcome-overlay { background: rgba(236,234,229,0.82); }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+.welcome-card {
+  width: 580px;
+  max-width: 92vw;
+  background: var(--bg);
+  border: 1px solid var(--line-2);
+  padding: 40px 44px 32px;
+  animation: slide-up 280ms cubic-bezier(0.34,1.56,0.64,1);
+}
+html[data-theme="light"] .welcome-card { background: var(--card-bg-2); }
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.welcome-card .step-meta {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 18px;
+}
+.welcome-card h2 {
+  font-family: var(--sans);
+  font-size: 28px;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 0 0 12px;
+}
+.welcome-card .sub { color: var(--fg-dim); line-height: 1.55; margin: 0 0 24px; }
+.welcome-card .options { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
+.welcome-card .option {
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: border-color 150ms, background 150ms;
+}
+.welcome-card .option:hover { border-color: var(--line-2); background: var(--bg-2); }
+html[data-theme="light"] .welcome-card .option:hover { background: var(--bg-4); }
+.welcome-card .option.selected { border-color: var(--accent); background: var(--accent-soft); }
+.welcome-card .option .icon { font-family: var(--mono); font-size: 13px; color: var(--accent); width: 28px; }
+.welcome-card .option .t { font-size: 14.5px; }
+.welcome-card .option .d { font-size: 12px; color: var(--fg-mute); margin-top: 2px; }
+.welcome-card .free-input {
+  width: 100%;
+  min-height: 100px;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  color: var(--fg);
+  padding: 12px;
+  margin-bottom: 28px;
+  font-family: var(--sans);
+  font-size: 14px;
+  resize: none;
+}
+.welcome-card .free-input:focus { border-color: var(--line-2); }
+.welcome-card .nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+.welcome-card .progress { display: flex; gap: 4px; }
+.welcome-card .progress .pip {
+  width: 28px;
+  height: 2px;
+  background: var(--line-2);
+  transition: background 200ms;
+}
+.welcome-card .progress .pip.active { background: var(--accent); }
+
+/* ────────────────────────────────────────
+   UTILITY
+   ──────────────────────────────────────── */
+.flex { display: flex; }
+.flex-1 { flex: 1; }
+.spacer { flex: 1; }
+.gap-8 { gap: 8px; }
+.gap-12 { gap: 12px; }
+.muted { color: var(--fg-mute); }
+.dim { color: var(--fg-dim); }
+.accent-c { color: var(--accent); }
+
+/* ────────────────────────────────────────
+   RESPONSIVE — degrade gracefully
+   ──────────────────────────────────────── */
+@media (max-width: 1100px) {
+  #app { grid-template-columns: 56px 1fr; }
+  .sidebar .brand span:not(.dot),
+  .sidebar .nav-btn span:not(.icon):not(.badge),
+  .sidebar-foot { display: none; }
+  .nav-sub { display: none; }
+  .chat-page { grid-template-columns: 1fr; }
+  .divider, .surface { display: none; }
+  .data-body { grid-template-columns: 1fr; }
+  .auto-page-body { grid-template-columns: 1fr; }
+  .keeper-panel { position: static; }
+  .auto-row { grid-template-columns: 1fr; gap: 8px; padding: 16px; }
+  .block-kpi { grid-template-columns: repeat(2, 1fr); }
+  .block-kpi .cell { border-bottom: 1px solid var(--line); }
+  .block-kpi .cell:nth-child(2n) { border-right: none; }
+  .block-matrix { grid-template-columns: 1fr; }
+  .block-matrix .cell { border-right: none; border-bottom: 1px solid var(--line); }
+  .block-matrix .cell:last-child { border-bottom: none; }
+  .dash-w-12, .dash-w-8, .dash-w-6, .dash-w-4, .dash-w-3 { grid-column: span 12; }
+  .dashboard-page, .automations-page, .account-page { padding: 24px 20px 40px; }
+  .surface-body { padding: 18px 20px 24px; }
+  .section-title { font-size: 32px; }
+}
+
+@media (max-width: 640px) {
+  .dashboard-page h2.section-title,
+  .automations-page h2.section-title { font-size: 28px; }
+}
+
+/* ════════════════════════════════════════════════════════════
+   v2 — INTERACTION + POLISH PASS
+   ════════════════════════════════════════════════════════════ */
+
+:root, html[data-theme="dark"], html[data-theme="light"] {
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --smooth: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --quick:  cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Paper-grain noise · light mode only · ultra subtle */
+html[data-theme="light"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='3'/><feColorMatrix values='0 0 0 0 0.1  0 0 0 0 0.1  0 0 0 0 0.09  0 0 0 0.04 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  mix-blend-mode: multiply;
+}
+#app { position: relative; z-index: 1; }
+
+/* Italic serif accent · subtle underline flourish */
+.serif {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 1px;
+}
+.serif::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 8%;
+  bottom: -2px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.45;
+  transform-origin: left;
+  transform: scaleX(0);
+  animation: serif-underline 800ms 200ms var(--smooth) forwards;
+}
+@keyframes serif-underline {
+  to { transform: scaleX(1); }
+}
+
+/* Page transition — fade in main content */
+.main > * {
+  animation: page-in 320ms var(--smooth);
+}
+@keyframes page-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Block hover lift */
+.block-matrix .cell,
+.auto-row,
+.as-row,
+.connector-chip,
+.md-tab,
+.history-strip .v {
+  transition: background 150ms var(--quick), border-color 150ms var(--quick), color 150ms var(--quick), transform 200ms var(--spring);
+}
+
+/* Focus ring · accessible + on-brand */
+button:focus-visible,
+textarea:focus-visible,
+input:focus-visible,
+.connector-chip:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ────────────────────────────────────────
+   TOAST SYSTEM
+   ──────────────────────────────────────── */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+  max-width: 360px;
+}
+.toast {
+  pointer-events: auto;
+  background: var(--bg-2);
+  border: 1px solid var(--line-2);
+  border-left: 3px solid var(--accent);
+  padding: 12px 16px 12px 14px;
+  font-size: 13px;
+  color: var(--fg);
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 280px;
+  animation: toast-in 320ms var(--spring);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.32);
+}
+html[data-theme="light"] .toast {
+  background: var(--card-bg-2);
+  box-shadow: 0 8px 24px rgba(26,26,24,0.10);
+}
+.toast.out { animation: toast-out 220ms var(--smooth) forwards; }
+@keyframes toast-in {
+  from { opacity: 0; transform: translateX(20px) translateY(4px); }
+  to { opacity: 1; transform: translateX(0) translateY(0); }
+}
+@keyframes toast-out {
+  to { opacity: 0; transform: translateX(20px); height: 0; padding-top: 0; padding-bottom: 0; margin-top: -1px; border-width: 0; }
+}
+.toast.pos { border-left-color: var(--positive); }
+.toast.warn { border-left-color: var(--warn); }
+.toast.danger { border-left-color: var(--danger); }
+.toast .t {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 3px;
+}
+.toast.pos .t { color: var(--positive); }
+.toast.warn .t { color: var(--warn); }
+.toast.danger .t { color: var(--danger); }
+.toast .m { line-height: 1.45; font-size: 13px; }
+.toast .x {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--fg-mute);
+  background: transparent;
+  border: none;
+  padding: 0 0 0 8px;
+  cursor: pointer;
+  transition: color 120ms;
+}
+.toast .x:hover { color: var(--fg); }
+
+/* ────────────────────────────────────────
+   TYPING INDICATOR
+   ──────────────────────────────────────── */
+.msg.typing .bubble {
+  background: var(--bg-2);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 16px;
+}
+.typing-dots {
+  display: inline-flex;
+  gap: 4px;
+}
+.typing-dots span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.4;
+  animation: typing 1.2s ease-in-out infinite;
+}
+.typing-dots span:nth-child(2) { animation-delay: 0.15s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.30s; }
+@keyframes typing {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-3px); opacity: 1; }
+}
+
+/* New chat message slide-in */
+.msg { animation: msg-in 280ms var(--smooth); }
+@keyframes msg-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ────────────────────────────────────────
+   APPROVAL DISMISSAL · ROW COLLAPSE
+   ──────────────────────────────────────── */
+.approval-row.dismissing,
+.as-row.dismissing {
+  animation: row-out 360ms var(--smooth) forwards;
+  overflow: hidden;
+  pointer-events: none;
+}
+@keyframes row-out {
+  0%   { opacity: 1; }
+  30%  { opacity: 0; transform: translateX(8px); }
+  100% { opacity: 0; transform: translateX(8px); max-height: 0; padding-top: 0; padding-bottom: 0; border-width: 0; }
+}
+
+/* Approval row · approved checkmark flash */
+.approval-row.approved::after,
+.as-row.approved::after {
+  content: "✓ APPROVED";
+  position: absolute;
+  top: 50%;
+  right: 24px;
+  transform: translateY(-50%);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--positive);
+  animation: stamp 280ms var(--spring);
+}
+.approval-row { position: relative; }
+.as-row { position: relative; }
+@keyframes stamp {
+  from { opacity: 0; transform: translateY(-50%) scale(0.7) rotate(-4deg); }
+  to { opacity: 1; transform: translateY(-50%) scale(1) rotate(-2deg); }
+}
+
+/* ────────────────────────────────────────
+   KPI value flash on update
+   ──────────────────────────────────────── */
+.block-kpi .cell .v.flash {
+  animation: kpi-flash 600ms var(--smooth);
+}
+@keyframes kpi-flash {
+  0% { color: var(--accent); }
+  100% { color: var(--fg); }
+}
+
+/* ────────────────────────────────────────
+   CONNECTOR CHIP · INTERACTIVE
+   ──────────────────────────────────────── */
+.connector-chip { cursor: pointer; }
+.connector-chip.on:hover { border-color: var(--positive); }
+.connector-chip.off:hover { border-color: var(--accent-line); color: var(--accent); }
+.connector-chip.off:hover .status-dot { background: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+
+/* ────────────────────────────────────────
+   DATA LAYER · EDIT MODE
+   ──────────────────────────────────────── */
+.md-editor {
+  width: 100%;
+  min-height: 480px;
+  background: var(--bg-2);
+  border: 1px solid var(--line-2);
+  color: var(--fg);
+  padding: 18px 20px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.65;
+  resize: vertical;
+}
+.md-editor:focus { border-color: var(--accent-line); outline: none; }
+.md-tab .dirty {
+  display: inline-block;
+  width: 5px; height: 5px;
+  background: var(--accent);
+  border-radius: 50%;
+  margin-left: 6px;
+  vertical-align: 1px;
+}
+
+/* ────────────────────────────────────────
+   AUTOMATION · PAUSED STATE
+   ──────────────────────────────────────── */
+.auto-row.paused { opacity: 0.55; }
+.auto-row.paused .pill { background: transparent; color: var(--fg-mute); border-color: var(--line-2); }
+
+/* "Run now" pulse on the affected row */
+.auto-row.just-ran {
+  animation: ran-pulse 900ms var(--smooth);
+}
+@keyframes ran-pulse {
+  0% { background: var(--accent-soft); }
+  100% { background: transparent; }
+}
+
+/* ────────────────────────────────────────
+   HISTORY DAY · VIEWING-PAST BANNER
+   ──────────────────────────────────────── */
+.viewing-past {
+  margin: -8px 0 22px;
+  padding: 10px 14px;
+  border: 1px solid var(--accent-line);
+  background: var(--accent-soft);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: page-in 280ms var(--smooth);
+}
+.viewing-past .x {
+  background: transparent;
+  border: 1px solid var(--accent-line);
+  color: var(--accent);
+  padding: 4px 10px;
+  font: inherit;
+  cursor: pointer;
+  transition: background 150ms;
+}
+.viewing-past .x:hover { background: var(--accent); color: var(--accent-ink); }
+
+/* ────────────────────────────────────────
+   WELCOME · COMPLETION CHECK STATE
+   ──────────────────────────────────────── */
+.welcome-card .option.selected .icon {
+  color: var(--accent);
+  transform: scale(1.1);
+  transition: transform 200ms var(--spring);
+}
+
+/* ────────────────────────────────────────
+   KEEPER CHIP · CLICKED FLASH
+   ──────────────────────────────────────── */
+.keeper-chip.flash {
+  animation: chip-flash 480ms var(--smooth);
+}
+@keyframes chip-flash {
+  0% { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  100% { background: var(--bg); color: var(--fg); border-color: var(--line); }
+}
+
+/* ────────────────────────────────────────
+   ENTER-TO-SEND HINT
+   ──────────────────────────────────────── */
+.chat-input { position: relative; }
+.chat-input .hint {
+  position: absolute;
+  right: 100px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  color: var(--fg-ghost);
+  text-transform: uppercase;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 150ms;
+}
+.chat-input textarea:focus ~ .hint { opacity: 1; }
+
+/* ────────────────────────────────────────
+   NEW SESSION SPAWN HIGHLIGHT
+   ──────────────────────────────────────── */
+.nav-sub-item.new {
+  animation: nav-flash 1200ms var(--smooth);
+}
+@keyframes nav-flash {
+  0% { background: var(--accent-soft); }
+  100% { background: transparent; }
+}
+
+/* ────────────────────────────────────────
+   SURFACE TAB · NEW HOVER
+   ──────────────────────────────────────── */
+.surface-tab:last-child:hover {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* ────────────────────────────────────────
+   PRESS STATES — subtle scale
+   ──────────────────────────────────────── */
+.btn:active,
+.btn-mini:active,
+.send:active,
+.send-mini:active,
+.connector-chip:active { transform: scale(0.97); }
+.btn, .btn-mini, .send, .send-mini, .connector-chip { transition: transform 80ms var(--quick), filter 150ms, border-color 150ms, color 150ms, background 150ms; }
+
+/* Sidebar nav button press */
+.nav-btn:active { background: var(--accent-soft); }
+
+/* ────────────────────────────────────────
+   APPROVAL BLOCK ACTION · CLICKED STATE
+   ──────────────────────────────────────── */
+.block-approval.resolved {
+  border-color: var(--positive);
+  background: var(--positive-soft);
+  transition: border-color 200ms, background 200ms;
+}
+.block-approval.resolved .pill.warn { color: var(--positive); border-color: var(--positive); background: var(--positive-soft); }
+.block-approval.resolved .pill.warn::before { content: "✓ "; }
+.block-approval.resolved .actions { display: none; }
+.block-approval.resolved::after {
+  content: "Resolved";
+  display: block;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--positive);
+  margin-top: 6px;
+}
+
+/* ────────────────────────────────────────
+   SUBTLE GRID BACKGROUND ON SURFACE BODY (dark only)
+   "editorial blueprint" — barely there
+   ──────────────────────────────────────── */
+html[data-theme="dark"] .surface-body {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* "Tend is thinking" agent label color tweak */
+.msg.typing .who { color: var(--accent); }
+
+/* Empty state for sessions with no surface */
+.surface-empty {
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--fg-mute);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}
+
+/* Light-mode toast tweak */
+html[data-theme="light"] .toast { border-color: var(--line-2); }
+
+/* Reduce-motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+  }
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+/* ════════════════════════════════════════════════════════════
+   DATA — Riverbend Realty seed (Sarah Chen · Austin broker)
+   ════════════════════════════════════════════════════════════ */
+const TEND_DATA = (() => {
+  const tenant = {
+    workspaceName: "Riverbend Realty",
+    tagline: "Hyper-local Austin real estate · since 2017",
+    plan: "Solo · $2,500/mo",
+    owner: { name: "Sarah Chen", email: "sarah@riverbendrealty.com", role: "Owner · Broker", initials: "SC" },
+    coverage: 0.78,
+    today: "Sun May 17, 2026",
+  };
+
+  const dataLayer = {
+    "business.md": { label: "business.md", updated: "3d ago", coverage: 0.95, content: `# Riverbend Realty — Business Profile
+
+## Identity
+- **Legal name:** Riverbend Realty LLC
+- **DBA:** Riverbend Realty
+- **License:** TX BR# 9-748202 (Sarah Chen, Broker)
+- **Founded:** March 2017
+- **Headcount:** 1 (solo)
+- **Address:** 2114 E 6th St, Suite 4, Austin TX 78702
+
+## What we do
+Residential real estate in central + east Austin. Single-family, condo, and small multi-family (2–4 unit). Primarily buyer representation (60%) and listing representation (40%). Average transaction price: $612,000 (2025). ~40 closings/year since 2021.
+
+## Where we work
+**Core neighborhoods** (90% of volume): Mueller, East Austin (Holly, Cesar Chavez corridor, Govalle), South Lamar / Bouldin, Hyde Park, North Loop.
+**Will work but not lead-gen:** Westlake, Tarrytown, Circle C, Pflugerville.
+
+## Who we work with
+- First-time buyers in the $400–700K range (largest cohort)
+- Move-up buyers in the $700K–1.4M range
+- Sellers of homes owned 5–15 years
+- Light investor activity (1–2 deals/year, long-term hold only)
+
+## Hours & availability
+- Office: by appointment only
+- Field: Tue–Sat, 9am–7pm
+- Mon: admin day, no showings` },
+
+    "voice.md": { label: "voice.md", updated: "3d ago", coverage: 0.92, content: `# Brand Voice — Riverbend Realty
+
+## Tone
+Warm, direct, locally rooted. Sound like a neighbor who happens to be a broker, not a salesperson. Confident but not slick. We write like we talk.
+
+## Do
+- Use first names with past clients
+- Reference specific neighborhood details ("the trail behind Patterson Park")
+- Be plain about numbers — never sugarcoat a hard comp
+- Ask one clear question per message
+- Sign off "— Sarah"
+
+## Don't
+- Use "luxury," "stunning," "must-see," "won't last"
+- Use exclamation points (except in celebration messages)
+- Use jargon without translating it
+- Sign off "Best regards" or "Warm regards"
+
+## Banned words
+luxury, stunning, must-see, won't last, motivated seller, hidden gem, charming` },
+
+    "services.md": { label: "services.md", updated: "5d ago", coverage: 0.88, content: `# Services
+
+## Buyer representation
+- Commission: 2.75% (split per market norm)
+- Includes: search, showings, offer strategy, negotiation, closing
+- Free buyer consultation (1h)
+
+## Listing representation
+- Commission: 2.5%
+- Includes: pricing, photography, staging consult, MLS, marketing, negotiation, closing
+
+## Consulting
+- $200/h, one-off pricing reviews, off-market valuations
+
+## Anniversary follow-through
+- 1-year check-in for every past client
+- 3-year market snapshot
+- December year-end note for all cohorts` },
+
+    "vendors.md": { label: "vendors.md", updated: "1d ago", coverage: 0.72, content: `# Preferred Vendors
+
+## Home Inspection
+- **Allen Reed Inspections** ★★★★★ · $400 flat · 24h turnaround
+
+## Photography
+- **Studio Vela** · $550 / 30 photos · 24h delivery · nadia@studiovela.co
+
+## Staging
+- **Form & Field Staging** · $1,200 / 3-week rental
+
+## Title
+- **Texas Title Group, Mueller** · Maria Estrada
+
+## Lending (preferred referrals)
+- Velocity Lending — Marcus Field
+- Frost Bank Mortgage
+
+## Drone / Video
+*Gap — no current vendor. Last used FlyLens Media (exited market 2024).*
+
+## Cleaning / Move-out
+- Bluebonnet Cleaning · $350 standard, $550 deep` },
+
+    "clients.md": { label: "clients.md", updated: "today", coverage: 0.85, content: `# Past Clients (cohort summary)
+
+## 2024 cohort — May closing anniversary (due May 2026)
+1. **Jamie & Pat Liu** — 3BR Mueller condo, $625K
+2. **Devon Marsh** — 2BR East Austin bungalow, $510K
+3. **The Okonkwo family** — 4BR South Lamar, $890K
+4. **Aisha Patel** — 1BR Hyde Park condo, $385K
+5. **Reggie & Tomás** — duplex on Cesar Chavez, $720K
+6. **The Halperns** — 3BR Holly bungalow, $585K
+7. **Maya Brennan** — 2BR North Loop, $445K
+8. **Wei & Jin Zhao** — 3BR Govalle, $542K
+
+## 2023 cohort (3-yr anniversary May 2026)
+11 households due for 3-year market snapshot.
+
+## Cohort tags
+\`buyer-firsttime\` (38), \`buyer-moveup\` (27), \`seller\` (31), \`investor\` (4), \`do-not-contact\` (6)` },
+
+    "outreach-rules.md": { label: "outreach-rules.md", updated: "3w ago", coverage: 0.80, content: `# Outreach Cadence
+
+## Frequency caps
+- Past clients: max 4 touches/year
+- Active leads: max 2 touches/week
+- Cold list: never. We don't cold-market.
+
+## Channels
+- buyer-firsttime → email primary, SMS for time-sensitive only
+- seller → email + SMS for live listings
+
+## Blackout
+- Dec 23 – Jan 2, Easter weekend, SXSW week, Election Tuesday
+
+## Opt-out
+6 households flagged \`do-not-contact\`. Hard rule.
+
+## Signature
+Every outbound ends "— Sarah" and (512) 555-0188.` },
+
+    "competitors.md": { label: "competitors.md", updated: "5w ago", coverage: 0.55, content: `# Competitive Set
+
+## Direct competitors
+- **East Austin Realty Co.** — 3 agents, undercuts on commission (2.25%)
+- **Mueller & Co. Realty** — 5 agents, strong staging program
+- **Threshold Properties** — 2 agents, Tarrytown focus
+
+## What we beat them on
+- Hyper-local knowledge
+- 9-year track record
+- Past-client retention: 24% repeat or referred
+
+## Where we lose
+- Listing volume
+- Tech polish on competitor websites
+
+## Watch list
+- Mueller & Co. hired a new agent in March
+- Threshold launched a YouTube channel in February` },
+  };
+
+  const connectors = [
+    { id: "gmail", label: "Gmail", state: "on" },
+    { id: "gcal", label: "Calendar", state: "on" },
+    { id: "drive", label: "Drive", state: "on" },
+    { id: "notion", label: "Notion", state: "on" },
+    { id: "mls", label: "MLS Austin", state: "on" },
+    { id: "hubspot", label: "HubSpot", state: "off" },
+    { id: "stripe", label: "Stripe", state: "off" },
+  ];
+
+  const sessions = [
+    {
+      id: "general",
+      kind: "general",
+      title: "General",
+      sub: "primary orchestrator · always-on",
+      lastActive: "now",
+      messages: [
+        { role: "agent", time: "8:14 AM", text: "Morning, Sarah. Quick scan: the May past-client anniversary blast is queued (8 messages, all draft and waiting on you), Devon T.'s 3-star review reply is on hold for the call you wanted to make first, and the drone vendor gap is still open — Skybridge Aerial came back overnight, want to see the bid?" },
+        { role: "user", time: "8:21 AM", text: "Show me the bid in a sec. First — anything I should know about today before I head out?" },
+        { role: "agent", time: "8:21 AM", text: "Two showings on the calendar (1:30 and 3:00, both in Mueller). The pre-launch checklist for the Tom Miller Dr listing is at 6 of 9 — drone shoot, final staging photos, and the pricing review still open. Want me to spawn a session to drive that to the finish line?" },
+        { role: "user", time: "8:22 AM", text: "Yes — start a session for the Tom Miller pre-launch." },
+        { role: "agent", time: "8:22 AM", text: "Done. Opened **Mueller listing · pre-launch** under Operations. The room has tabs for the checklist, the comp set, and the photo plan. I'll keep working it in the background; ping me here if anything else needs a session." },
+      ],
+      surfaces: [],
+    },
+    {
+      id: "ops-vendor-q2",
+      kind: "operations",
+      title: "Q2 vendor sourcing",
+      sub: "drone + video gap · sourcing 3 candidates",
+      lastActive: "12m ago",
+      messages: [
+        { role: "user", time: "Fri · 4:42 PM", text: "We still don't have a drone vendor. I have a Mueller listing going live in 10 days. Find me 3 options." },
+        { role: "agent", time: "Fri · 4:43 PM", text: "On it. Cross-referencing the Austin Realtor vendor directory and recent listings in our comp set for who their brokers used. Pulling Google ratings, Instagram portfolio quality, response time. I'll surface 3 with a comparison." },
+        { role: "agent", time: "Fri · 5:18 PM", text: "Three candidates on the operating surface — Skybridge Aerial, Lone Pine Drone, and AustinAir Visuals. Skybridge is the strongest portfolio + price; Lone Pine is fastest turnaround; AustinAir is cheapest but mixed reviews. Outreach drafts are ready in the Outreach tab. Approve and I'll send." },
+        { role: "user", time: "Sat · 9:04 AM", text: "Send Skybridge first. Hold the other two." },
+        { role: "agent", time: "Sat · 9:04 AM", text: "Sent to Skybridge at 9:05 AM. I'll watch for the reply and surface it here. The other two outreach drafts are paused — you can release them anytime." },
+        { role: "agent", time: "Sun · 7:48 AM", text: "Skybridge replied at 6:12 AM with a bid: $325 / shoot including 4K aerial + 2-min cut, 48h turnaround, available Wed–Sat. Their bid is on the Vendors tab — approve to book for the Tom Miller listing or counter." },
+      ],
+      surfaces: [
+        {
+          id: "vendors", label: "Vendors", count: 3,
+          metaStrip: { num: "§01", name: "VENDOR SHORTLIST", desc: "Drone + video · East Austin" },
+          blocks: [
+            { type: "kpi", cols: 3, items: [
+              { k: "Candidates", v: "3", delta: "+1 since Fri" },
+              { k: "Open bids", v: "1", delta: "Skybridge", deltaTone: "pos" },
+              { k: "Days to listing", v: "10", delta: "Tom Miller Dr", deltaTone: "warn" },
+            ] },
+            { type: "matrix", cols: 3, head: { kicker: "→ SHORTLIST", title: "Three candidates, ranked" }, items: [
+              { num: "01 / PRIMARY", title: "Skybridge Aerial", body: "Strongest portfolio in our price band. 4K aerial + interior cinematic cuts. Used by Mueller & Co. on 4 of last 6 listings.", foot: "Bid · $325 · 48h · Wed–Sat", footStrong: "Bid in" },
+              { num: "02 / BACKUP", title: "Lone Pine Drone", body: "Fastest turnaround in the market (24h). Smaller portfolio, mostly exteriors. Higher hourly rate ($120/h).", foot: "Awaiting reply · 0h", footStrong: "Drafted" },
+              { num: "03 / FLOOR", title: "AustinAir Visuals", body: "Cheapest option ($250 flat) but Google reviews mixed on edit quality. Worth keeping warm as a fallback only.", foot: "Drafted · holding", footStrong: "Held" },
+            ] },
+            { type: "approval", label: "BID DECISION", title: "Book Skybridge Aerial for Tom Miller Dr shoot?", body: "$325 · 4K aerial + 2-min cinematic cut · 48h turnaround. Window: Wed May 21 – Sat May 24. Photographer Studio Vela is booked Sat morning so Skybridge would go Thu or Fri AM.", actions: ["Approve & book Thu", "Approve & book Fri", "Counter at $295", "Hold"] },
+          ],
+        },
+        {
+          id: "outreach", label: "Outreach drafts", count: 2,
+          metaStrip: { num: "§02", name: "OUTREACH DRAFTS", desc: "Held — release manually" },
+          blocks: [
+            { type: "doc", head: { kicker: "→ DRAFT 01 · LONE PINE", title: "Email to Carla @ Lone Pine Drone" }, body: `**Subject:** Drone shoot · East Austin listing · May 21–24
+
+Hey Carla —
+
+Quick note. We have a single-family listing going live in Mueller around Memorial Day weekend and I'm shopping drone + short cinematic for the launch package. Saw your reel on the Cherrywood listing in April — clean work.
+
+Window is Wed May 21 to Sat May 24. Roughly 30 min on-site, ~2 min cut for IG + MLS. What's your bid?
+
+If timing's wrong, totally fine to ignore.
+
+— Sarah` },
+            { type: "doc", head: { kicker: "→ DRAFT 02 · AUSTINAIR", title: "Email to Jay @ AustinAir Visuals" }, body: `**Subject:** Mueller listing drone shoot · single project
+
+Hey Jay —
+
+Got a listing in Mueller going live around May 26. Looking for a basic aerial set — 6 stills + a 60-second reel for socials. What's your turnaround and bid if I gave you a Thu or Fri window?
+
+— Sarah` },
+          ],
+        },
+        {
+          id: "matrix", label: "Comparison", count: 0,
+          metaStrip: { num: "§03", name: "COMPARISON MATRIX", desc: "Side-by-side · vendors" },
+          blocks: [
+            { type: "table", head: { kicker: "→ SCORECARD", title: "Drone vendors · Q2 sourcing" }, table: {
+              cols: ["Vendor", "Bid", "Turnaround", "Portfolio", "Tier"],
+              rows: [
+                ["Skybridge Aerial", "$325", "48h", "★★★★★", "Primary"],
+                ["Lone Pine Drone", "—", "24h", "★★★★", "Backup"],
+                ["AustinAir Visuals", "$250", "72h", "★★★", "Floor"],
+              ],
+            } },
+          ],
+        },
+      ],
+    },
+    {
+      id: "ops-market-east",
+      kind: "operations",
+      title: "East Austin · Q3 market scan",
+      sub: "comps + signal · listing pipeline planning",
+      lastActive: "1h ago",
+      messages: [
+        { role: "user", time: "Fri · 10:11 AM", text: "I want to start scoping Q3 listings. Pull a fresh comp set for 3BR single-family + condo in Holly / Govalle / Mueller, last 90 days. Tell me where the market actually is." },
+        { role: "agent", time: "Fri · 10:11 AM", text: "Working. I'll pull MLS, dedupe against my own past records, and surface medians by submarket with the price-per-sqft trend. Expect a comparison view + a price-band recommendation." },
+        { role: "agent", time: "Fri · 11:34 AM", text: "Done. Three tabs: Comps (the underlying transactions), Submarket signals (the why), and Pipeline (which past-cohort households are likely listers in the next 12 months). Headline: Mueller has softened ~2.1% QoQ, DOM is up to 21 days. Govalle is still tight. The recommendation block has the price-band call." },
+      ],
+      surfaces: [
+        {
+          id: "comps", label: "Comps", count: 8,
+          metaStrip: { num: "§01", name: "COMP SET", desc: "3BR · last 90 days · sold + active" },
+          blocks: [
+            { type: "table", head: { kicker: "→ TRANSACTIONS", title: "Mueller / Holly / Govalle · 3BR comps" }, table: {
+              cols: ["Address", "Sqft", "List", "Sold", "DOM", "Status"],
+              rows: [
+                ["3105 Tom Miller Dr #B", "1,480", "$659K", "$652K", "12", "Sold Apr 28"],
+                ["1907 Berkman Dr #4", "1,390", "$615K", "$605K", "18", "Sold Apr 22"],
+                ["4408 Berkman Dr #2", "1,525", "$689K", "$670K", "31", "Sold Apr 12"],
+                ["3210 Tom Miller Dr #A", "1,455", "$645K", "$640K", "19", "Sold Mar 30"],
+                ["1815 Simond Ave #5", "1,430", "$632K", "$618K", "24", "Sold Mar 18"],
+                ["4515 Mattie St #C", "1,505", "$675K", "—", "27", "Active"],
+                ["3025 Berkman Dr #11", "1,470", "$655K", "—", "14", "Active"],
+                ["1721 Wilshire Dr #B", "1,410", "$619K", "—", "8", "Pending"],
+              ],
+            } },
+            { type: "doc", head: { kicker: "→ INTERPRETATION", title: "Pricing-band call" }, body: `**If listing in the next 30 days, price $629K–$648K depending on finishes.**
+
+Inventory has softened — 21-day median DOM is the highest since Q3 2024, and the list-to-sold ratio dipped under 99% for the first time this year. Price aggressively against the Apr 22 comp ($605K on 1,390 sqft) and against the two active listings sitting at 14+ DOM. Avoid the 4408 Berkman pattern — overpriced relative to interior finishes, took 31 days. Pre-list staging matters more in this market than it did 90 days ago.` },
+          ],
+        },
+        {
+          id: "signals", label: "Submarket signals", count: 0,
+          metaStrip: { num: "§02", name: "SUBMARKET SIGNALS", desc: "Why the numbers moved" },
+          blocks: [
+            { type: "kpi", cols: 4, items: [
+              { k: "Median $/sqft", v: "$432", delta: "−2.1% QoQ", deltaTone: "warn" },
+              { k: "Median DOM", v: "21", delta: "+7d", deltaTone: "warn" },
+              { k: "List → sold", v: "98.4%", delta: "first dip <99% YTD" },
+              { k: "Active inventory", v: "11", delta: "+3 last 30d" },
+            ] },
+            { type: "matrix", cols: 2, head: { kicker: "→ SIGNAL READ", title: "What's actually changing" }, items: [
+              { num: "01 / SUPPLY", title: "Mueller condo inventory bumped", body: "Three new active listings since Apr 28. Two from Mueller & Co. (the competitor watching us back). Net: buyers have options for the first time since Q4 2024.", foot: "Bias · seller", footStrong: "Softening" },
+              { num: "02 / BUYER MIX", title: "First-time cohort hesitating", body: "Mortgage rate stuck at 6.8%. First-time buyer financing approvals down 14% in March MLS data. Move-up cohort still active — they have equity.", foot: "Bias · move-up", footStrong: "Active" },
+            ] },
+          ],
+        },
+        {
+          id: "pipeline", label: "Listing pipeline", count: 4,
+          metaStrip: { num: "§03", name: "PAST-COHORT LISTING SIGNAL", desc: "Households likely to sell in next 12mo" },
+          blocks: [
+            { type: "doc", head: { kicker: "→ SHORTLIST", title: "Lister candidates from past clients" }, body: `Based on tenure (5–9 years), life-event signals from your notes, and submarket appreciation since their purchase, these households score highest as 2026 listers:
+
+- **The Halperns** — 3BR Holly bungalow, bought 2017 at $385K. Asked about ADU permitting in March (often a precursor to renovation OR a "we're outgrowing this" conversation). Worth a coffee.
+- **Wei & Jin Zhao** — 3BR Govalle, bought 2018 at $462K. Mentioned vacation property interest in their May 2025 anniversary reply. Often a "we're sitting on equity" signal.
+- **Reggie & Tomás** — Cesar Chavez duplex, bought 2017 at $510K. Rental side has gone month-to-month per their last conversation. Could be liquidity-curious.
+- **Aisha Patel** — 1BR Hyde Park, bought 2019 at $310K. Recent promotion mentioned. Classic move-up signal in 6–12 months.` },
+          ],
+        },
+      ],
+    },
+    {
+      id: "ops-reactivation",
+      kind: "operations",
+      title: "Past-client reactivation",
+      sub: "May anniversary cohort · 8 households",
+      lastActive: "3h ago",
+      messages: [
+        { role: "user", time: "Wed · 8:15 AM", text: "It's anniversary month for the May 2024 cohort. Draft the 8 check-ins. You know the rules." },
+        { role: "agent", time: "Wed · 8:15 AM", text: "Drafting personalized notes for the 8 households using each person's specific context (Jamie + Pat — kid bedrooms; Devon — refi window; Okonkwos — twins; Halperns — ADU question; etc.). One message per household. Held in the Drafts tab pending your review." },
+        { role: "agent", time: "Wed · 9:42 AM", text: "Drafts ready. 8 messages, each tagged with the specific signal it speaks to. The Audience tab has the cohort table with my contact-frequency check (everyone is within cadence rules). Approval gate is in the Drafts tab — you can release individually or batch-approve." },
+        { role: "user", time: "Thu · 9:30 AM", text: "Hold on the Halperns one. I want to call them first." },
+        { role: "agent", time: "Thu · 9:30 AM", text: "Held. The Halpern draft is parked; the remaining 7 are still ready to release when you say." },
+      ],
+      surfaces: [
+        {
+          id: "audience", label: "Audience", count: 8,
+          metaStrip: { num: "§01", name: "AUDIENCE", desc: "May 2024 cohort · anniversary cadence" },
+          blocks: [
+            { type: "table", head: { kicker: "→ COHORT", title: "8 households · cadence-checked" }, table: {
+              cols: ["Household", "Purchase", "Tag", "Last touch", "Signal"],
+              rows: [
+                ["Jamie & Pat Liu", "3BR Mueller · $625K", "moveup", "Dec 24", "Kids' rooms / yard"],
+                ["Devon Marsh", "2BR E Austin · $510K", "firsttime", "Dec 24", "Refi window"],
+                ["The Okonkwos", "4BR S Lamar · $890K", "moveup", "Dec 24", "Twins in Dec"],
+                ["Aisha Patel", "1BR Hyde Park · $385K", "firsttime", "Dec 24", "Promotion"],
+                ["Reggie & Tomás", "Duplex CC · $720K", "investor", "Dec 24", "Rental m2m"],
+                ["The Halperns", "3BR Holly · $585K", "moveup", "Mar 25", "ADU question"],
+                ["Maya Brennan", "2BR N Loop · $445K", "firsttime", "Dec 24", "Promotion"],
+                ["Wei & Jin Zhao", "3BR Govalle · $542K", "moveup", "Dec 24", "Vacation prop"],
+              ],
+            } },
+          ],
+        },
+        {
+          id: "drafts", label: "Drafts", count: 8,
+          metaStrip: { num: "§02", name: "DRAFTS", desc: "8 personalized · voice-checked" },
+          blocks: [
+            { type: "doc", head: { kicker: "→ DRAFT · LIU", title: "Jamie & Pat Liu · Mueller anniversary" }, body: `**Subject:** Year one in Mueller — quick note
+
+Jamie, Pat —
+
+A year ago today you closed on Berkman. Hope the place still feels like yours.
+
+Worth a look: a few 3BRs with proper kid bedrooms came on the market in the last 60 days in the $700–750K band. Not pushing — just keeping you in the loop since you'd mentioned the kids growing into theirs. The trail behind Patterson Park is still the best part of Mueller.
+
+If timing's wrong, totally fine to ignore.
+
+— Sarah` },
+            { type: "doc", head: { kicker: "→ DRAFT · MARSH", title: "Devon Marsh · refi window" }, body: `**Subject:** Quick note — one year in Holly
+
+Devon —
+
+A year today since the Holly close. Numbers question: 30-year rates are sitting at 6.8% but the conventional refi window typically opens at 5.9% — we're not there yet. Wanted to flag it on the calendar so you know I'm watching.
+
+How's the bungalow?
+
+— Sarah` },
+            { type: "approval", label: "BATCH RELEASE", title: "Approve 7 of 8 messages?", body: "Halpern draft held per your note (calling first). Remaining 7 will send via email today, signed '— Sarah', tracked in run history.", actions: ["Approve all 7", "Approve individually", "Hold all"] },
+          ],
+        },
+      ],
+    },
+    {
+      id: "ops-mueller-prelaunch",
+      kind: "operations",
+      title: "Mueller listing · pre-launch",
+      sub: "Tom Miller Dr · go-live May 26",
+      lastActive: "spawned 8:22 AM",
+      messages: [
+        { role: "agent", time: "8:22 AM", text: "New session. Pre-launch room open for Tom Miller Dr. I've pulled the checklist (6 of 9 done), the comp set we already built in the East Austin scan, and the photo / staging plan. Let me know which piece you want to drive first — pricing review, drone vendor, or staging confirmation." },
+        { role: "user", time: "8:24 AM", text: "Pricing review. I want to settle the number before Studio Vela shoots." },
+        { role: "agent", time: "8:24 AM", text: "On the surface: pricing-band call from the East Austin scan ($629K–$648K), narrowed for this address by Mueller-only and finishes-comparable comps. My recommendation is $639,000. Approve, counter, or ask for the sensitivity table." },
+      ],
+      surfaces: [
+        {
+          id: "checklist", label: "Checklist", count: 9,
+          metaStrip: { num: "§01", name: "PRE-LAUNCH CHECKLIST", desc: "9 items · 6 done" },
+          blocks: [
+            { type: "checklist", items: [
+              { label: "Listing agreement signed (sellers: J. & K. Adler)", meta: "done · Apr 28", done: true },
+              { label: "Title order opened (Texas Title · Estrada)", meta: "done · May 02", done: true },
+              { label: "Walkthrough + repair list completed", meta: "done · May 04", done: true },
+              { label: "Cleaning booked (Bluebonnet · deep)", meta: "done · May 06", done: true },
+              { label: "Staging plan confirmed (Form & Field)", meta: "done · May 09", done: true },
+              { label: "Mortgage paydown letter requested", meta: "done · May 12", done: true },
+              { label: "Pricing review · decision needed", meta: "open · today", done: false },
+              { label: "Drone shoot scheduled (Skybridge — pending bid approval)", meta: "open · this week", done: false },
+              { label: "MLS listing copy final review", meta: "open · May 24", done: false },
+            ] },
+          ],
+        },
+        {
+          id: "pricing", label: "Pricing", count: 0,
+          metaStrip: { num: "§02", name: "PRICING REVIEW", desc: "Tom Miller Dr · 3BR · 1,495 sqft" },
+          blocks: [
+            { type: "kpi", cols: 4, items: [
+              { k: "Comp band", v: "$629–648K" },
+              { k: "Recommend", v: "$639K", delta: "midpoint", deltaTone: "pos" },
+              { k: "$ / sqft", v: "$427" },
+              { k: "Est. DOM", v: "16–22d" },
+            ] },
+            { type: "doc", head: { kicker: "→ RATIONALE", title: "Why $639K is the number" }, body: `Tom Miller Dr is 1,495 sqft with kitchen + master bath renovated in 2022. That puts it ahead of the Apr 22 Berkman comp (1,390 sqft, dated kitchen, sold $605K) and behind the Apr 28 Tom Miller comp on the same block (1,480 sqft, sold $652K, fresh paint but original baths).
+
+$639K threads it. Above $645K and we risk the 4408 Berkman pattern (overpriced, 31-day DOM). Below $635K and we leave money on the table given the renovations.` },
+            { type: "approval", label: "PRICING APPROVAL", title: "List Tom Miller Dr at $639,000?", body: "Recommended midpoint of the $629K–$648K band. Pricing strategy locked once approved; MLS copy will reflect.", actions: ["Approve at $639K", "Counter — try $645K", "Counter — try $635K", "Ask for sensitivity"] },
+          ],
+        },
+        {
+          id: "photo", label: "Photo plan", count: 0,
+          metaStrip: { num: "§03", name: "PHOTO + DRONE PLAN", desc: "Studio Vela + Skybridge" },
+          blocks: [
+            { type: "spec", cols: 3, cells: [
+              { k: "Photographer", v: "Studio Vela (Nadia)" },
+              { k: "Drone", v: "Skybridge Aerial (pending)" },
+              { k: "Staging in by", v: "Thu May 22 AM" },
+            ] },
+            { type: "doc", head: { kicker: "→ SHOT LIST", title: "Required frames" }, body: `**Interior (Vela)** — 28 frames: 4 living + dining wide, 6 kitchen (incl. detail on the quartz), 6 master suite + bath, 4 secondary bedrooms, 4 guest bath / laundry, 4 exterior detail.
+
+**Drone (Skybridge)** — 6 stills + 60-second cinematic cut: front elevation aerial, rooftop / lot context, neighborhood approach down Tom Miller, golden-hour back-yard.
+
+**Hero frame** — kitchen island looking south through the dining slider. Always the hero in Mueller listings.` },
+          ],
+        },
+      ],
+    },
+  ];
+
+  const automations = [
+    {
+      id: "anniversary-cadence", name: "Anniversary cadence",
+      desc: "Past-client check-ins on 1yr + 3yr closings",
+      schedule: "Monthly · 1st @ 8AM", last: "May 1 · ran", next: "Jun 1 · 8:00 AM",
+      status: "active", approvals: true,
+      sequence: [
+        { n: "01", t: "Identify cohort", sub: "Past clients with anniversary in the month" },
+        { n: "02", t: "Check opt-out + cadence", sub: "Against outreach-rules.md" },
+        { n: "03", t: "Draft personalized notes", sub: "Voice-checked against voice.md" },
+        { n: "04", t: "Hold for approval", sub: "Gate · owner reviews batch", gate: true },
+        { n: "05", t: "Send via Gmail", sub: "Tracked in run history" },
+      ],
+      produces: "Personalized 1:1 emails (one per household)",
+      output: { kind: "email", via: "Gmail · sarah@riverbendrealty.com", lands: "Dashboard → Outbox · sent log", volume: "8–14 / month" },
+      recentRuns: [
+        { when: "May 1 · 8:00 AM", outcome: "8 drafts surfaced · awaiting approval", artifact: "drafts/may-anniversaries.md", status: "awaiting" },
+        { when: "Apr 1 · 8:00 AM", outcome: "6 drafts sent after owner review", artifact: "runs/apr-anniversaries.md", status: "complete" },
+        { when: "Mar 1 · 8:00 AM", outcome: "9 drafts sent · 1 held (do-not-contact flag)", artifact: "runs/mar-anniversaries.md", status: "complete" },
+      ],
+    },
+    {
+      id: "morning-brief", name: "Morning brief",
+      desc: "Daily summary in General chat at 7AM",
+      schedule: "Daily · 7AM", last: "Today · 7:00 AM", next: "Tomorrow · 7:00 AM",
+      status: "active", approvals: false,
+      sequence: [
+        { n: "01", t: "Pull calendar", sub: "Today + tomorrow showings" },
+        { n: "02", t: "Scan active sessions", sub: "What's open + waiting" },
+        { n: "03", t: "Surface in General", sub: "No approval needed" },
+      ],
+      produces: "Daily orientation brief",
+      output: { kind: "chat", via: "General chat · pinned to top", lands: "Dashboard → Today block + General chat", volume: "1 / day" },
+      recentRuns: [
+        { when: "Today · 7:00 AM", outcome: "Brief posted to General · 3 showings, 2 approvals", artifact: "runs/2026-05-17-brief.md", status: "complete" },
+        { when: "Yesterday · 7:00 AM", outcome: "Brief posted · 1 showing, 4 approvals", artifact: "runs/2026-05-16-brief.md", status: "complete" },
+        { when: "Fri · 7:00 AM", outcome: "Brief posted · 5 showings (open house Sat)", artifact: "runs/2026-05-15-brief.md", status: "complete" },
+      ],
+    },
+    {
+      id: "review-watcher", name: "Review watcher",
+      desc: "Google / Zillow / Realtor.com reviews",
+      schedule: "Daily · 6AM", last: "Today · 6:00 AM", next: "Tomorrow · 6:00 AM",
+      status: "active", approvals: true,
+      sequence: [
+        { n: "01", t: "Poll review sources", sub: "Google + Zillow + Realtor.com" },
+        { n: "02", t: "Detect new reviews", sub: "Diff against last poll" },
+        { n: "03", t: "Draft response", sub: "Voice-matched, holds 3+ star reviews" },
+        { n: "04", t: "Hold ≤3-star for owner call", sub: "Gate · never auto-publish", gate: true },
+        { n: "05", t: "Publish 4–5★ after approval", sub: "Otherwise hold for manual" },
+      ],
+      produces: "Public review replies (4–5★ auto, ≤3★ held)",
+      output: { kind: "public-post", via: "Google Business / Zillow / Realtor.com APIs", lands: "Dashboard → Approvals queue (≤3★) · run log (4–5★)", volume: "2–4 / week" },
+      recentRuns: [
+        { when: "Today · 6:00 AM", outcome: "1 new 5★ (Halpern household) · reply drafted", artifact: "runs/2026-05-17-reviews.md", status: "awaiting" },
+        { when: "Yesterday · 6:00 AM", outcome: "No new reviews", artifact: null, status: "complete" },
+        { when: "May 14 · 6:00 AM", outcome: "1 new 3★ · held for owner call", artifact: "runs/2026-05-14-reviews.md", status: "held" },
+      ],
+    },
+    {
+      id: "listing-pipeline-watch", name: "Listing pipeline watch",
+      desc: "Weekly scan for past-cohort listing signals",
+      schedule: "Weekly · Mon 6AM", last: "Mon May 12 · 6:00 AM", next: "Mon May 19 · 6:00 AM",
+      status: "active", approvals: false,
+      sequence: [
+        { n: "01", t: "Score households", sub: "Tenure + life-event signals" },
+        { n: "02", t: "Surface shortlist", sub: "Top 5 candidates → General" },
+      ],
+      produces: "Top-5 candidate shortlist (households with listing signals)",
+      output: { kind: "chat", via: "General chat · weekly post", lands: "Dashboard → Pipeline block", volume: "1 / week" },
+      recentRuns: [
+        { when: "Mon May 12 · 6:00 AM", outcome: "5 candidates surfaced · Halperns #1", artifact: "runs/2026-05-12-pipeline.md", status: "complete" },
+        { when: "Mon May 5 · 6:00 AM", outcome: "5 candidates surfaced · Zhao moved up", artifact: "runs/2026-05-05-pipeline.md", status: "complete" },
+      ],
+    },
+    {
+      id: "monthly-comp-refresh", name: "Comp refresh · core neighborhoods",
+      desc: "Mueller / Holly / Govalle / Hyde Park",
+      schedule: "Monthly · 15th", last: "May 15 · ran", next: "Jun 15",
+      status: "active", approvals: false,
+      sequence: [
+        { n: "01", t: "Pull MLS sold + active", sub: "Last 90 days, neighborhoods filter" },
+        { n: "02", t: "Update comp tables", sub: "Per-neighborhood, append-only" },
+        { n: "03", t: "Surface deltas", sub: "QoQ price + DOM movement" },
+      ],
+      produces: "Updated comp tables · 4 neighborhoods",
+      output: { kind: "data-write", via: "Writes to data/comps/*.md", lands: "Data Layer → comps/ files · Dashboard → Market deltas", volume: "1 / month" },
+      recentRuns: [
+        { when: "May 15 · ran", outcome: "4 comp tables refreshed · Mueller DOM ↓3d", artifact: "runs/2026-05-15-comps.md", status: "complete" },
+        { when: "Apr 15 · ran", outcome: "4 comp tables refreshed · Holly $/sf +2.4%", artifact: "runs/2026-04-15-comps.md", status: "complete" },
+      ],
+    },
+    {
+      id: "year-end-note", name: "Year-end note",
+      desc: "December all-cohort holiday touchpoint",
+      schedule: "Annual · Dec 8", last: "Dec 8, 2025", next: "Dec 8, 2026",
+      status: "scheduled", approvals: true,
+      sequence: [
+        { n: "01", t: "Pull every past-client cohort", sub: "Exclude do-not-contact" },
+        { n: "02", t: "Draft year-end note per household", sub: "Voice-matched" },
+        { n: "03", t: "Owner reviews batch", sub: "Gate · all 142 in one queue", gate: true },
+        { n: "04", t: "Send", sub: "Tracked + filed under runs/" },
+      ],
+      produces: "Year-end touchpoint · 142 households",
+      output: { kind: "email", via: "Gmail · sarah@riverbendrealty.com", lands: "Dashboard → Outbox · sent log", volume: "1 / year · ~142 sends" },
+      recentRuns: [
+        { when: "Dec 8, 2025", outcome: "138 sent · 4 held (do-not-contact)", artifact: "runs/2025-12-08-yearend.md", status: "complete" },
+      ],
+    },
+  ];
+
+  const dashboardBlocks = [
+    { type: "kpi", width: 12, kicker: "§01 / TODAY", title: "Operating snapshot · Sun May 17",
+      items: [
+        { k: "Runs this week", v: "8", delta: "+3 vs last week", deltaTone: "pos" },
+        { k: "Approvals pending", v: "6", delta: "across 4 automations", deltaTone: "warn" },
+        { k: "Hours saved (est.)", v: "6.4", delta: "vs manual baseline", deltaTone: "pos" },
+        { k: "Data coverage", v: "78%", delta: "3 gaps flagged", deltaTone: "" },
+      ],
+    },
+    { type: "approvals-inbox", width: 4, kicker: "§02 / APPROVALS", title: "Approvals" },
+    { type: "matrix", width: 8, cols: 3, kicker: "§03 / ACTIVE", title: "Live sessions",
+      items: [
+        { num: "OPERATIONS", title: "Q2 vendor sourcing", body: "Skybridge bid in at $325, awaiting decision.", foot: "12m ago", footStrong: "Decision needed" },
+        { num: "OPERATIONS", title: "Mueller pre-launch", body: "Pricing review open. $639K rec.", foot: "spawned 8:22", footStrong: "Decision needed" },
+        { num: "OPERATIONS", title: "Past-client reactivation", body: "8 drafts; Halperns held for call.", foot: "3h ago", footStrong: "Awaiting approval" },
+      ],
+    },
+    { type: "outputs-feed", width: 8, kicker: "§04 / AUTOMATION OUTPUTS", title: "Recent landings" },
+    { type: "spec", width: 4, kicker: "§05 / DATA LAYER", title: "Snapshot",
+      cells: [
+        { k: "Files", v: "7 / 7" },
+        { k: "Coverage", v: "78%" },
+        { k: "Connectors", v: "5 on" },
+      ],
+    },
+    { type: "table", width: 12, kicker: "§06 / RUN HISTORY", title: "Last 6 runs (all sources)",
+      table: {
+        cols: ["When", "Source", "Outcome", "Status"],
+        rows: [
+          ["Sun 8:22 AM", "Mueller pre-launch (session)", "Session spawned", "Active"],
+          ["Sun 7:48 AM", "Q2 vendor sourcing (session)", "Skybridge bid received", "Awaiting decision"],
+          ["Sun 7:00 AM", "Morning brief (auto)", "Daily brief posted to General", "Complete"],
+          ["Sun 6:00 AM", "Review watcher (auto)", "Halpern 5★ reply drafted", "Awaiting approval"],
+          ["Sat 9:05 AM", "Q2 vendor sourcing (session)", "Outreach to Skybridge sent", "Complete"],
+          ["Fri 11:34 AM", "E Austin Q3 scan (session)", "Comp set + pipeline built", "Complete"],
+        ],
+      },
+    },
+  ];
+
+  const account = {
+    plan: "Solo", price: "$2,500 / mo", renews: "Jun 14, 2026", seats: "1 of 1",
+    surfaces: ["Web", "Telegram (v1.2)", "WhatsApp (v1.3)"],
+    storage: { used: "84MB", quota: "5GB" },
+    supportCalls: { used: 1, included: 2 },
+    nextInvoice: "May 31, 2026 · $2,500",
+  };
+
+  const approvalsQueue = [
+    { id: "halpern-anniv", from: "Anniversary cadence", title: "Halpern household · 3yr note", preview: "\"Hey John — three years ago this month we closed on the place off Manor. Hope the kids are loving the trail behind Patterson Park…\"", waitingSince: "6h", priority: "normal", channel: "Gmail" },
+    { id: "patersons-anniv", from: "Anniversary cadence", title: "Liu household · 1yr note", preview: "\"Jamie, Pat — a year ago today you closed on Berkman. Hope the place still feels like yours…\"", waitingSince: "6h", priority: "normal", channel: "Gmail" },
+    { id: "review-3star", from: "Review watcher", title: "3★ Zillow review · pending owner call", preview: "Reviewer flagged closing-day communication. Drafted reply is held — never auto-publish on ≤3★.", waitingSince: "3d", priority: "high", channel: "Zillow public reply" },
+    { id: "skybridge-booking", from: "Q2 vendor sourcing", title: "Skybridge drone · book the Mueller shoot", preview: "Skybridge confirmed $325 · 48h turnaround. Booking holds 24h.", waitingSince: "12m", priority: "high", channel: "Calendar + Gmail" },
+    { id: "tom-miller-pricing", from: "Mueller pre-launch", title: "Tom Miller Dr · pricing decision", preview: "Recommended band $629–648K based on 6 comps. Awaiting your number.", waitingSince: "8:22 AM", priority: "high", channel: "Listing draft" },
+    { id: "halpern-review-reply", from: "Review watcher", title: "Halpern 5★ Google reply", preview: "\"Thanks John — was a pleasure working through that closing weekend with you and Mara…\"", waitingSince: "2h", priority: "normal", channel: "Google Business" },
+  ];
+
+  const automationOutputs = [
+    { when: "Today · 7:00 AM", from: "Morning brief", what: "Daily brief posted to General", where: "General chat", kind: "chat" },
+    { when: "Today · 6:00 AM", from: "Review watcher", what: "Halpern 5★ reply drafted", where: "Approvals queue", kind: "approval" },
+    { when: "Mon May 12", from: "Listing pipeline watch", what: "5 candidates surfaced · Halperns #1", where: "General chat + Pipeline block", kind: "chat" },
+    { when: "May 1", from: "Anniversary cadence", what: "8 drafts surfaced", where: "Approvals queue", kind: "approval" },
+    { when: "May 15", from: "Comp refresh", what: "4 comp tables refreshed", where: "data/comps/* · Dashboard market block", kind: "data-write" },
+    { when: "Apr 1", from: "Anniversary cadence", what: "6 emails sent post-approval", where: "Outbox · Gmail", kind: "email" },
+  ];
+
+  return { tenant, dataLayer, connectors, sessions, automations, dashboardBlocks, account, approvalsQueue, automationOutputs };
+})();
+
+/* ════════════════════════════════════════════════════════════
+   HELPERS
+   ════════════════════════════════════════════════════════════ */
+const $ = (sel, root = document) => root.querySelector(sel);
+const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+const h = (tag, attrs = {}, ...kids) => {
+  const el = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (v === false || v == null) continue;
+    if (k === "class") el.className = v;
+    else if (k === "html") el.innerHTML = v;
+    else if (k === "text") el.textContent = v;
+    else if (k.startsWith("on") && typeof v === "function") el.addEventListener(k.slice(2), v);
+    else if (k === "style" && typeof v === "object") Object.assign(el.style, v);
+    else el.setAttribute(k, v);
+  }
+  for (const kid of kids.flat()) {
+    if (kid == null || kid === false) continue;
+    el.appendChild(typeof kid === "string" ? document.createTextNode(kid) : kid);
+  }
+  return el;
+};
+const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+/* minimal markdown */
+function md(text) {
+  if (!text) return "";
+  const lines = text.split("\n");
+  let out = [], inList = false, inCode = false;
+  const flush = () => { if (inList) { out.push("</ul>"); inList = false; } };
+  for (let raw of lines) {
+    if (raw.trim().startsWith("```")) { flush(); inCode = !inCode; out.push(inCode ? "<pre><code>" : "</code></pre>"); continue; }
+    if (inCode) { out.push(esc(raw)); continue; }
+    let line = raw;
+    if (/^### /.test(line)) { flush(); out.push("<h3>" + esc(line.slice(4)) + "</h3>"); continue; }
+    if (/^## /.test(line)) { flush(); out.push("<h2>" + esc(line.slice(3)) + "</h2>"); continue; }
+    if (/^# /.test(line)) { flush(); out.push("<h1>" + esc(line.slice(2)) + "</h1>"); continue; }
+    if (/^[-*] /.test(line)) {
+      if (!inList) { out.push("<ul>"); inList = true; }
+      out.push("<li>" + inline(line.replace(/^[-*] /, "")) + "</li>");
+      continue;
+    }
+    flush();
+    if (line.trim() === "") { out.push(""); continue; }
+    out.push("<p>" + inline(line) + "</p>");
+  }
+  flush();
+  return out.join("\n");
+}
+function inline(s) {
+  return esc(s)
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/`([^`]+?)`/g, "<code>$1</code>")
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+}
+
+/* ════════════════════════════════════════════════════════════
+   STATE
+   ════════════════════════════════════════════════════════════ */
+const state = {
+  page: "dashboard",
+  sessionId: "general",
+  surfaceTab: 0,
+  dataFile: "business.md",
+  sidebarCollapsed: false,
+  welcomeShown: (() => {
+    try {
+      const q = new URLSearchParams(location.search);
+      if (q.get("welcome") === "1") return false;
+      if (q.get("welcome") === "0") return true;
+    } catch (e) {}
+    return localStorage.getItem("tend.welcomeDone") === new Date().toDateString();
+  })(),
+  welcomeStep: 0,
+  welcomeAnswers: {},
+  automationDetail: null,
+  autoTab: "jobs",
+  theme: localStorage.getItem("tend.theme") || "dark",
+  chatSplit: null,
+  dataSplit: null,
+  // v2 interaction state
+  toasts: [],                       // [{ id, t, m, tone }]
+  toastSeq: 0,
+  connectorStates: (() => {
+    const out = {};
+    TEND_DATA.connectors.forEach(c => out[c.id] = c.state);
+    return out;
+  })(),
+  userMessages: {},                 // sessionId -> [extra msgs appended]
+  typingSession: null,              // sessionId currently being "replied to"
+  dismissedApprovals: new Set(),    // ids dismissed
+  resolvedApprovals: new Set(),     // in-surface approval blocks resolved
+  pausedAutomations: new Set(),
+  runFlash: null,                   // automation id that just ran
+  recentRuns: [],                   // user-triggered runs prepended to history
+  editingFile: null,                // dataFile id when editing
+  fileBuffer: {},                   // dataFile id -> edit text
+  dirtyFiles: new Set(),
+  viewingDay: null,                 // "MAY 16" etc.
+  greetingFocus: null,              // welcome answer surfaces here
+  newSessionId: null,               // recently spawned session id for highlight
+  approvedActions: new Set(),       // surface approval block keys
+};
+
+/* ════════════════════════════════════════════════════════════
+   v2 — BEHAVIOR HELPERS
+   ════════════════════════════════════════════════════════════ */
+function uid() { return Math.random().toString(36).slice(2, 9); }
+
+/* ─── TOAST ─── */
+function toast({ t = "TEND", m = "", tone = "" } = {}) {
+  const id = ++state.toastSeq;
+  state.toasts.push({ id, t, m, tone });
+  renderToasts();
+  setTimeout(() => dismissToast(id), 4500);
+}
+function dismissToast(id) {
+  const el = document.querySelector(`.toast[data-id="${id}"]`);
+  if (el) {
+    el.classList.add("out");
+    setTimeout(() => {
+      state.toasts = state.toasts.filter(x => x.id !== id);
+      renderToasts();
+    }, 220);
+  } else {
+    state.toasts = state.toasts.filter(x => x.id !== id);
+    renderToasts();
+  }
+}
+function renderToasts() {
+  let c = document.querySelector(".toast-container");
+  if (!c) {
+    c = h("div", { class: "toast-container" });
+    document.body.appendChild(c);
+  }
+  c.innerHTML = "";
+  for (const tn of state.toasts) {
+    c.appendChild(h("div", { class: "toast " + (tn.tone || ""), "data-id": tn.id },
+      h("div", {},
+        h("span", { class: "t", text: tn.t }),
+        h("div", { class: "m", text: tn.m }),
+      ),
+      h("button", { class: "x", text: "×", onclick: () => dismissToast(tn.id) }),
+    ));
+  }
+}
+
+/* ─── CHAT ─── */
+function allMessages(session) {
+  return session.messages.concat(state.userMessages[session.id] || []);
+}
+function nowStamp() {
+  const d = new Date();
+  let h = d.getHours(), m = d.getMinutes();
+  const ampm = h >= 12 ? "PM" : "AM";
+  h = h % 12 || 12;
+  return h + ":" + String(m).padStart(2, "0") + " " + ampm;
+}
+function sendChat(sessionId, text) {
+  text = text.trim();
+  if (!text) return;
+  const session = TEND_DATA.sessions.find(s => s.id === sessionId);
+  if (!session) return;
+  state.userMessages[sessionId] = state.userMessages[sessionId] || [];
+  state.userMessages[sessionId].push({ role: "user", time: nowStamp(), text });
+
+  // /op command spawns a new operations session
+  const opMatch = text.match(/^\/op\s+(.+)/i);
+  if (opMatch) {
+    spawnSession(opMatch[1]);
+    render();
+    return;
+  }
+
+  // simulate agent thinking + reply
+  state.typingSession = sessionId;
+  render();
+  setTimeout(() => {
+    state.typingSession = null;
+    state.userMessages[sessionId].push({
+      role: "agent",
+      time: nowStamp(),
+      text: cannedReply(text, session),
+    });
+    render();
+  }, 900 + Math.random() * 700);
+}
+function cannedReply(text, session) {
+  const t = text.toLowerCase();
+  if (/^\/op\s/.test(text)) return "Spawning a new operations session…";
+  if (/price|comp|comps/.test(t)) return "Looking at the comp set. The $629–648K band still holds for the Tom Miller pricing — finishes-adjusted comps from the East Austin scan support $639K as the cleanest call. I'll surface a sensitivity matrix on the Pricing tab if you want to see the upside/downside cases.";
+  if (/show|see|view/.test(t)) return "Surfacing it on the operating surface to the right. Switch tabs to drill in.";
+  if (/send|approve|book/.test(t)) return "Held for your approval. The action is queued in the Approvals tab — release it when you're ready or counter and I'll re-draft.";
+  if (/hold|pause|wait/.test(t)) return "Holding. Let me know when you want me to move on it.";
+  if (/thanks|thank you|cool|nice|sounds good/.test(t)) return "Anytime.";
+  if (session.kind === "general") return "Got it. I'll keep this on the radar. Want me to spawn a session for it? Type `/op <name>` and I'll open a dedicated room.";
+  return "On it. I'll surface the results to the operating surface once I have them.";
+}
+function spawnSession(name) {
+  const id = "ops-" + name.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 20) + "-" + uid().slice(0, 4);
+  const session = {
+    id, kind: "operations",
+    title: name,
+    sub: "freshly spawned · empty room",
+    lastActive: "just now",
+    messages: [
+      { role: "agent", time: nowStamp(), text: `New session. Opened **${name}**. The room is empty — tell me what you want to drive here.` },
+    ],
+    surfaces: [],
+  };
+  TEND_DATA.sessions.push(session);
+  state.sessionId = id;
+  state.surfaceTab = 0;
+  state.newSessionId = id;
+  setTimeout(() => { state.newSessionId = null; }, 1300);
+  toast({ t: "SESSION SPAWNED", m: `Operations room "${name}" is open. Use chat to drive it.`, tone: "pos" });
+}
+
+/* ─── APPROVALS (cross-automation inbox) ─── */
+function approveItem(id, decision) {
+  const el = document.querySelector(`.approval-row[data-id="${id}"], .as-row[data-id="${id}"]`);
+  if (el) {
+    el.classList.add(decision === "approve" ? "approved" : "");
+    setTimeout(() => {
+      el.classList.add("dismissing");
+      setTimeout(() => {
+        state.dismissedApprovals.add(id);
+        render();
+      }, 380);
+    }, decision === "approve" ? 420 : 0);
+  } else {
+    state.dismissedApprovals.add(id);
+    render();
+  }
+  const item = TEND_DATA.approvalsQueue.find(a => a.id === id);
+  const verb = decision === "approve" ? "Approved" : decision === "reject" ? "Rejected" : "Held";
+  const tone = decision === "approve" ? "pos" : decision === "reject" ? "danger" : "warn";
+  toast({ t: verb.toUpperCase(), m: `${item ? item.title : id}`, tone });
+}
+
+/* ─── IN-SURFACE APPROVAL BLOCK ─── */
+function resolveApproval(key, label) {
+  state.resolvedApprovals.add(key);
+  toast({ t: "DECISION RECORDED", m: label, tone: "pos" });
+  render();
+}
+
+/* ─── CONNECTORS ─── */
+function toggleConnector(id) {
+  const cur = state.connectorStates[id];
+  const next = cur === "on" ? "off" : "on";
+  state.connectorStates[id] = next;
+  const c = TEND_DATA.connectors.find(x => x.id === id);
+  toast({
+    t: next === "on" ? "CONNECTOR ON" : "CONNECTOR OFF",
+    m: `${c ? c.label : id} · ${next === "on" ? "now syncing" : "paused"}`,
+    tone: next === "on" ? "pos" : "warn",
+  });
+  render();
+}
+
+/* ─── AUTOMATIONS ─── */
+function runAutomationNow(id) {
+  const a = TEND_DATA.automations.find(x => x.id === id);
+  if (!a) return;
+  state.runFlash = id;
+  state.recentRuns.unshift({
+    when: nowStamp(),
+    outcome: `${a.name} · triggered manually`,
+    artifact: "runs/manual-" + uid().slice(0,4) + ".md",
+    status: a.approvals ? "awaiting" : "complete",
+  });
+  toast({ t: "RUN NOW", m: `${a.name} is running. ${a.approvals ? "Held for approval when complete." : "Output will land in " + (a.output ? a.output.lands : "history")}`, tone: "pos" });
+  setTimeout(() => { state.runFlash = null; render(); }, 1000);
+  render();
+}
+function togglePauseAutomation(id) {
+  if (state.pausedAutomations.has(id)) {
+    state.pausedAutomations.delete(id);
+    toast({ t: "RESUMED", m: "Job is active again.", tone: "pos" });
+  } else {
+    state.pausedAutomations.add(id);
+    toast({ t: "PAUSED", m: "Job won't run on its schedule until you resume.", tone: "warn" });
+  }
+  render();
+}
+
+/* ─── KEEPER ─── */
+function keeperChipClick(text, el) {
+  const ta = document.querySelector(".keeper-input textarea");
+  if (ta) { ta.value = text; ta.focus(); }
+  if (el) {
+    el.classList.add("flash");
+    setTimeout(() => el.classList.remove("flash"), 480);
+  }
+}
+function keeperSend(text) {
+  if (!text || !text.trim()) return;
+  toast({ t: "KEEPER", m: `Working: "${text.slice(0, 60)}${text.length > 60 ? "…" : ""}"`, tone: "pos" });
+}
+
+/* ─── DATA LAYER ─── */
+function startEditFile() {
+  state.editingFile = state.dataFile;
+  state.fileBuffer[state.dataFile] = TEND_DATA.dataLayer[state.dataFile].content;
+  render();
+}
+function saveEditFile() {
+  const f = state.dataFile;
+  if (state.fileBuffer[f] != null) {
+    TEND_DATA.dataLayer[f].content = state.fileBuffer[f];
+    TEND_DATA.dataLayer[f].updated = "just now";
+    state.dirtyFiles.add(f);
+    toast({ t: "SAVED", m: `${f} updated. Librarian will run coverage check.`, tone: "pos" });
+  }
+  state.editingFile = null;
+  render();
+}
+function cancelEditFile() {
+  state.editingFile = null;
+  delete state.fileBuffer[state.dataFile];
+  render();
+}
+
+/* ─── HISTORY STRIP ─── */
+function viewHistoryDay(label) {
+  if (label === "MAY 17") {
+    state.viewingDay = null;
+  } else {
+    state.viewingDay = label;
+    toast({ t: "SNAPSHOT", m: `Viewing the snapshot from ${label}. Click "Return to today" to come back.`, tone: "warn" });
+  }
+  render();
+}
+
+/* ─── CHAT INPUT WIRING (Enter to send) ─── */
+function wireChatInput(textarea, sendButton, sessionId) {
+  if (!textarea) return;
+  const fire = () => {
+    const v = textarea.value;
+    textarea.value = "";
+    sendChat(sessionId, v);
+  };
+  textarea.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      fire();
+    }
+  });
+  if (sendButton) sendButton.addEventListener("click", fire);
+}
+
+/* ─── KEEPER INPUT WIRING ─── */
+function wireKeeperInput(textarea, sendButton) {
+  if (!textarea) return;
+  const fire = () => {
+    const v = textarea.value;
+    textarea.value = "";
+    keeperSend(v);
+  };
+  textarea.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      fire();
+    }
+  });
+  if (sendButton) sendButton.addEventListener("click", fire);
+}
+
+
+function go(patch) {
+  Object.assign(state, patch);
+  render();
+}
+
+/* ════════════════════════════════════════════════════════════
+   RENDER ROOT
+   ════════════════════════════════════════════════════════════ */
+function render() {
+  document.documentElement.setAttribute("data-theme", state.theme);
+  const root = $("#app");
+  root.className = state.sidebarCollapsed ? "collapsed" : "";
+  root.innerHTML = "";
+  root.appendChild(renderSidebar());
+  root.appendChild(renderMain());
+
+  // welcome overlay only on first dashboard visit per day
+  const existing = $(".welcome-overlay");
+  if (existing) existing.remove();
+  if (state.page === "dashboard" && !state.welcomeShown) {
+    document.body.appendChild(renderWelcomeOverlay());
+  }
+  renderToasts();
+}
+
+/* ════════════════════════════════════════════════════════════
+   SIDEBAR
+   ════════════════════════════════════════════════════════════ */
+function renderSidebar() {
+  const aside = h("aside", { class: "sidebar" });
+
+  aside.appendChild(h("div", { class: "sidebar-head" },
+    h("div", { class: "brand" },
+      h("span", { class: "dot" }),
+      h("span", { text: "tend" }),
+    ),
+    h("button", {
+      class: "collapse-btn mono",
+      onclick: () => go({ sidebarCollapsed: !state.sidebarCollapsed }),
+      title: state.sidebarCollapsed ? "Expand" : "Collapse",
+      text: state.sidebarCollapsed ? "›" : "‹",
+    }),
+  ));
+
+  const body = h("div", { class: "sidebar-body" });
+  body.appendChild(navBtn({ id: "dashboard", icon: "00", label: "Dashboard" }));
+  body.appendChild(navBtn({ id: "chat", icon: "01", label: "Chat" }));
+
+  if (state.page === "chat" && !state.sidebarCollapsed) {
+    const sub = h("div", { class: "nav-sub" });
+    sub.appendChild(h("div", { class: "nav-sub-head", text: "General" }));
+    sub.appendChild(subItem(TEND_DATA.sessions.find(s => s.kind === "general")));
+    sub.appendChild(h("div", { class: "nav-sub-head", text: "Operations · sessions" }));
+    TEND_DATA.sessions.filter(s => s.kind === "operations").forEach(s => sub.appendChild(subItem(s)));
+    body.appendChild(sub);
+  }
+
+  body.appendChild(navBtn({ id: "data", icon: "02", label: "Data Layer" }));
+  body.appendChild(navBtn({ id: "automations", icon: "03", label: "Automations", badge: TEND_DATA.approvalsQueue.filter(a => !state.dismissedApprovals.has(a.id)).length }));
+  body.appendChild(navBtn({ id: "account", icon: "04", label: "Account" }));
+  aside.appendChild(body);
+
+  const foot = h("div", { class: "sidebar-foot" });
+  foot.appendChild(h("div", { class: "ws-name", text: TEND_DATA.tenant.workspaceName }));
+  foot.appendChild(h("div", { class: "ws-owner", text: TEND_DATA.tenant.owner.name }));
+  foot.appendChild(h("div", { class: "ws-plan", text: TEND_DATA.tenant.plan }));
+  foot.appendChild(h("button", {
+    class: "theme-toggle",
+    onclick: () => {
+      const next = state.theme === "dark" ? "light" : "dark";
+      localStorage.setItem("tend.theme", next);
+      go({ theme: next });
+    },
+    title: "Toggle light/dark",
+  },
+    h("span", { class: "sw" }),
+    h("span", { text: state.theme === "dark" ? "DARK" : "LIGHT" }),
+  ));
+  foot.appendChild(h("button", {
+    class: "restart-tour",
+    onclick: () => {
+      localStorage.removeItem("tend.welcomeDone");
+      go({ welcomeShown: false, welcomeStep: 0, welcomeAnswers: {}, page: "dashboard" });
+    },
+    text: "↻ restart daily welcome",
+  }));
+  aside.appendChild(foot);
+
+  return aside;
+}
+
+function navBtn({ id, icon, label, badge }) {
+  const cls = "nav-btn" + (state.page === id ? " active" : "");
+  const btn = h("button", { class: cls, onclick: () => go({ page: id }) },
+    h("span", { class: "icon", text: icon }),
+    h("span", { text: label }),
+  );
+  if (badge) btn.appendChild(h("span", { class: "badge", text: String(badge) }));
+  return btn;
+}
+
+function subItem(s) {
+  const active = state.sessionId === s.id;
+  const isNew = state.newSessionId === s.id;
+  return h("button", {
+    class: "nav-sub-item" + (active ? " active" : "") + (isNew ? " new" : ""),
+    onclick: () => go({ sessionId: s.id, surfaceTab: 0 }),
+  },
+    h("span", { class: "dot-tiny" }),
+    h("span", { text: s.title }),
+  );
+}
+
+/* ════════════════════════════════════════════════════════════
+   MAIN
+   ════════════════════════════════════════════════════════════ */
+function renderMain() {
+  const main = h("section", { class: "main" });
+  switch (state.page) {
+    case "dashboard": main.appendChild(renderDashboard()); break;
+    case "chat": main.appendChild(renderChat()); break;
+    case "data": main.appendChild(renderData()); break;
+    case "automations": main.appendChild(renderAutomations()); break;
+    case "account": main.appendChild(renderAccount()); break;
+  }
+  return main;
+}
+
+/* ───── CHAT ───── */
+function renderChat() {
+  const session = TEND_DATA.sessions.find(s => s.id === state.sessionId) || TEND_DATA.sessions[0];
+  const isOp = session.kind === "operations";
+  const wrap = h("div", { class: "chat-page" + (isOp ? "" : " solo") });
+
+  const chatPane = h("div", { class: "chat-pane" });
+  chatPane.appendChild(h("div", { class: "chat-head" },
+    h("div", { class: "session-meta" },
+      h("div", { class: "session-title", text: session.title }),
+      h("div", { class: "session-sub", text: session.sub }),
+    ),
+    h("div", { class: "flex gap-8" },
+      h("span", { class: "pill " + (isOp ? "accent" : ""), text: isOp ? "OPERATIONS" : "GENERAL" }),
+      h("button", {
+        class: "btn-mini mono", text: "•••",
+        onclick: () => toast({ t: "SESSION", m: "Mute · Rename · Archive (mock menu).", tone: "" }),
+      }),
+    ),
+  ));
+
+  const body = h("div", { class: "chat-body" });
+  const msgs = allMessages(session);
+  for (const m of msgs) {
+    const msg = h("div", { class: "msg " + m.role });
+    msg.appendChild(h("div", { class: "who", text: (m.role === "user" ? "You" : "Tend") + " · " + m.time }));
+    const bub = h("div", { class: "bubble" });
+    bub.innerHTML = inline(m.text);
+    msg.appendChild(bub);
+    body.appendChild(msg);
+  }
+  // typing indicator
+  if (state.typingSession === session.id) {
+    const typing = h("div", { class: "msg agent typing" });
+    typing.appendChild(h("div", { class: "who", text: "Tend · thinking" }));
+    typing.appendChild(h("div", { class: "bubble" },
+      h("span", { class: "typing-dots" },
+        h("span", {}), h("span", {}), h("span", {}),
+      ),
+    ));
+    body.appendChild(typing);
+  }
+  chatPane.appendChild(body);
+
+  const inputWrap = h("div", { class: "chat-input" });
+  const ta = h("textarea", { placeholder: isOp ? `Continue ${session.title}… (Enter to send)` : "Ask Tend anything. Spawn a session with /op.", rows: "1" });
+  const sendBtn = h("button", { class: "send", text: "SEND →" });
+  inputWrap.appendChild(ta);
+  inputWrap.appendChild(sendBtn);
+  inputWrap.appendChild(h("span", { class: "hint", text: "Enter to send · Shift+Enter for newline" }));
+  chatPane.appendChild(inputWrap);
+  requestAnimationFrame(() => { wireChatInput(ta, sendBtn, session.id); ta.focus(); });
+
+  wrap.appendChild(chatPane);
+
+  if (isOp) {
+    const divider = h("div", { class: "divider" });
+    wrap.appendChild(divider);
+    wrap.appendChild(renderSurface(session));
+    requestAnimationFrame(() => enableHorizontalDrag(wrap, divider, "--chat-w", "--surface-w", null, (l, r) => {
+      state.chatSplit = { chat: l, surface: r };
+    }));
+    if (state.chatSplit && state.chatSplit.chat != null) {
+      wrap.style.setProperty("--chat-w", state.chatSplit.chat + "px");
+      wrap.style.setProperty("--surface-w", state.chatSplit.surface + "px");
+    }
+  }
+
+  requestAnimationFrame(() => { body.scrollTop = body.scrollHeight; });
+  return wrap;
+}
+
+function renderSurface(session) {
+  const surface = h("div", { class: "surface" });
+  const tabs = session.surfaces || [];
+  const tabIdx = Math.min(state.surfaceTab, tabs.length - 1);
+  const active = tabs[tabIdx];
+
+  const tabBar = h("div", { class: "surface-head" });
+  const tabRow = h("div", { class: "surface-tabs" });
+  tabs.forEach((t, i) => {
+    const tab = h("button", {
+      class: "surface-tab" + (i === tabIdx ? " active" : ""),
+      onclick: () => go({ surfaceTab: i }),
+    }, h("span", { text: t.label }));
+    if (t.count) tab.appendChild(h("span", { class: "tab-count mono", text: String(t.count) }));
+    tabRow.appendChild(tab);
+  });
+  tabRow.appendChild(h("button", {
+    class: "surface-tab", title: "New tab",
+    onclick: () => {
+      const name = prompt("Name for the new tab?");
+      if (!name) return;
+      session.surfaces = session.surfaces || [];
+      session.surfaces.push({ id: name.toLowerCase().replace(/\W+/g, "-"), label: name, count: 0, metaStrip: { num: "§" + String(session.surfaces.length + 1).padStart(2, "0"), name: name.toUpperCase(), desc: "newly added · empty" }, blocks: [] });
+      state.surfaceTab = session.surfaces.length - 1;
+      toast({ t: "TAB ADDED", m: `"${name}" tab is empty — ask Tend to fill it.`, tone: "pos" });
+      render();
+    },
+    text: "+",
+  }));
+  tabBar.appendChild(tabRow);
+  tabBar.appendChild(h("div", { class: "right" },
+    h("button", { class: "btn-mini mono", text: "EXPORT", onclick: () => toast({ t: "EXPORT", m: "Surface exported to clipboard (mock).", tone: "pos" }) }),
+    h("button", { class: "btn-mini mono", text: "⤢", title: "Expand", onclick: () => toast({ t: "EXPAND", m: "Full-screen surface (mock).", tone: "" }) }),
+  ));
+  surface.appendChild(tabBar);
+
+  const body = h("div", { class: "surface-body" });
+  if (active && active.metaStrip) body.appendChild(metaStrip(active.metaStrip));
+  if (active && active.blocks) {
+    for (const block of active.blocks) body.appendChild(renderBlock(block));
+  } else {
+    body.appendChild(h("div", { class: "dim mono", text: "Empty surface. Ask Tend to do something." }));
+  }
+  surface.appendChild(body);
+
+  // live sync footer
+  const now = new Date();
+  const stamp = now.toTimeString().slice(0, 8);
+  surface.appendChild(h("div", { class: "surface-foot" },
+    h("span", { text: "FIG. " + String(tabIdx + 1).padStart(2, "0") + " / OPERATING SURFACE / " + (active ? active.label.toUpperCase() : "") }),
+    h("span", { class: "sync" },
+      h("span", { class: "dot" }),
+      h("span", { text: "SYNCED " + stamp }),
+    ),
+  ));
+
+  return surface;
+}
+
+function metaStrip({ num, name, desc }) {
+  return h("div", { class: "meta surface-meta" },
+    h("strong", { text: num }),
+    h("span", { class: "sep", text: "/" }),
+    h("em", { text: name }),
+    h("span", { class: "sep", text: "/" }),
+    h("span", { text: desc }),
+  );
+}
+
+/* ────────────────────────────────────────
+   BLOCK RENDERERS
+   ──────────────────────────────────────── */
+function renderBlock(block) {
+  switch (block.type) {
+    case "doc": return docBlock(block);
+    case "kpi": return kpiBlock(block);
+    case "spec": return specBlock(block);
+    case "matrix": return matrixBlock(block);
+    case "table": return tableBlock(block);
+    case "code": return codeBlock(block);
+    case "approval": return approvalBlock(block);
+    case "approvals-inbox": return approvalsInboxBlock(block);
+    case "outputs-feed": return outputsFeedBlock(block);
+    case "checklist": return checklistBlock(block);
+    default: return h("div", { class: "muted", text: "[unknown block: " + block.type + "]" });
+  }
+}
+
+function blockHead(head) {
+  if (!head) return null;
+  return h("div", { class: "block-head" },
+    h("h3", { text: head.title }),
+    head.kicker ? h("div", { class: "kicker", text: head.kicker }) : null,
+  );
+}
+
+function docBlock(b) {
+  const w = h("div", { class: "block" });
+  if (b.head) w.appendChild(blockHead(b.head));
+  const body = h("div", { class: "block-doc" });
+  body.innerHTML = md(b.body || "");
+  w.appendChild(body);
+  return w;
+}
+
+function kpiBlock(b) {
+  const w = h("div", { class: "block" });
+  if (b.head) w.appendChild(blockHead(b.head));
+  const grid = h("div", { class: "block-kpi", style: { "--kpi-cols": String(b.cols || b.items.length) } });
+  for (const it of b.items) {
+    grid.appendChild(h("div", { class: "cell" },
+      h("div", { class: "k", text: it.k }),
+      h("div", { class: "v", html: esc(it.v) }),
+      it.delta ? h("div", { class: "delta " + (it.deltaTone || ""), text: it.delta }) : null,
+    ));
+  }
+  w.appendChild(grid);
+  return w;
+}
+
+function specBlock(b) {
+  const w = h("div", { class: "block" });
+  if (b.head) w.appendChild(blockHead(b.head));
+  const grid = h("div", { class: "block-spec", style: { "--spec-cols": String(b.cols || b.cells.length) } });
+  for (const c of b.cells) {
+    grid.appendChild(h("div", { class: "cell" },
+      h("div", { class: "k", text: c.k }),
+      h("div", { class: "v", text: c.v }),
+    ));
+  }
+  w.appendChild(grid);
+  return w;
+}
+
+function matrixBlock(b) {
+  const w = h("div", { class: "block" });
+  if (b.head) w.appendChild(blockHead(b.head));
+  const grid = h("div", {
+    class: "block-matrix cols-" + (b.cols || 3),
+    style: { "--matrix-cols": String(b.cols || 3) },
+  });
+  for (const it of b.items) {
+    const cell = h("div", { class: "cell" });
+    cell.appendChild(h("div", { class: "num", text: it.num }));
+    cell.appendChild(h("h4", { text: it.title }));
+    cell.appendChild(h("p", { text: it.body }));
+    if (it.foot || it.footStrong) cell.appendChild(h("div", { class: "foot" },
+      it.footStrong ? h("span", { class: "foot-label", text: it.footStrong }) : null,
+      it.foot ? h("span", { class: "foot-time", text: it.foot }) : null,
+    ));
+    grid.appendChild(cell);
+  }
+  w.appendChild(grid);
+  return w;
+}
+
+function tableBlock(b) {
+  const w = h("div", { class: "block" });
+  if (b.head) w.appendChild(blockHead(b.head));
+  const table = h("table", { class: "block-table" });
+  const thead = h("thead");
+  const trh = h("tr");
+  for (const c of b.table.cols) trh.appendChild(h("th", { text: c }));
+  thead.appendChild(trh);
+  table.appendChild(thead);
+  const tbody = h("tbody");
+  for (const row of b.table.rows) {
+    const tr = h("tr");
+    for (const cell of row) tr.appendChild(h("td", { text: cell }));
+    tbody.appendChild(tr);
+  }
+  table.appendChild(tbody);
+  w.appendChild(table);
+  return w;
+}
+
+function codeBlock(b) {
+  const w = h("div", { class: "block" });
+  if (b.head) w.appendChild(blockHead(b.head));
+  w.appendChild(h("pre", { class: "block-code", text: b.code }));
+  return w;
+}
+
+function approvalBlock(b) {
+  const key = (b.label || "") + "::" + (b.title || "");
+  const resolved = state.resolvedApprovals.has(key);
+  const w = h("div", { class: "block block-approval" + (resolved ? " resolved" : "") });
+  w.appendChild(h("div", { class: "head" },
+    h("div", { class: "label", text: b.label || "DECISION" }),
+    h("span", { class: "pill warn", text: resolved ? "RESOLVED" : "WAITING" }),
+  ));
+  w.appendChild(h("h4", { text: b.title }));
+  w.appendChild(h("p", { text: b.body }));
+  const actions = h("div", { class: "actions" });
+  (b.actions || []).forEach((a, i) => {
+    const txt = a.toLowerCase();
+    const cls = i === 0 ? "btn primary" : (txt.includes("hold") || txt.includes("reject") ? "btn reject" : "btn ghost");
+    actions.appendChild(h("button", {
+      class: cls, text: a,
+      onclick: () => resolveApproval(key, a),
+    }));
+  });
+  w.appendChild(actions);
+  return w;
+}
+
+function checklistBlock(b) {
+  const w = h("div", { class: "block" });
+  if (b.head) w.appendChild(blockHead(b.head));
+  const list = h("div", { class: "block-checklist" });
+  for (const it of b.items) {
+    list.appendChild(h("div", { class: "item" + (it.done ? " done" : "") },
+      h("span", { class: "check" }),
+      h("span", { class: "label", text: it.label }),
+      it.meta ? h("span", { class: "meta", text: it.meta }) : null,
+    ));
+  }
+  w.appendChild(list);
+  return w;
+}
+
+function approvalsInboxBlock(b) {
+  const queue = (TEND_DATA.approvalsQueue || []).filter(a => !state.dismissedApprovals.has(a.id));
+  const wrap = h("div", { class: "block block-approvals-summary" });
+  wrap.appendChild(h("div", { class: "block-head" },
+    h("h3", { text: b.title || "Approvals" }),
+    h("button", {
+      class: "kicker link",
+      onclick: () => go({ page: "automations", autoTab: "approvals" }),
+      text: queue.length + " PENDING →",
+    }),
+  ));
+  const list = h("div", { class: "approvals-summary-list" });
+  if (queue.length === 0) {
+    list.appendChild(h("div", { style: { padding: "24px 18px", color: "var(--fg-mute)", fontFamily: "var(--mono)", fontSize: "11px", letterSpacing: "0.06em", textAlign: "center" }, text: "INBOX ZERO" }));
+  }
+  for (const a of queue.slice(0, 3)) {
+    const row = h("button", {
+      class: "as-row prio-" + (a.priority || "normal"),
+      "data-id": a.id,
+      onclick: () => go({ page: "automations", autoTab: "approvals" }),
+    });
+    row.appendChild(h("div", { class: "as-title", text: a.title }));
+    row.appendChild(h("div", { class: "as-meta" },
+      h("span", { class: "from", text: a.from }),
+      h("span", { class: "sep", text: "·" }),
+      h("span", { class: "since", text: a.waitingSince }),
+    ));
+    list.appendChild(row);
+  }
+  wrap.appendChild(list);
+  if (queue.length > 3) {
+    wrap.appendChild(h("button", {
+      class: "summary-more",
+      onclick: () => go({ page: "automations", autoTab: "approvals" }),
+      text: "+ " + (queue.length - 3) + " more in queue →",
+    }));
+  }
+  return wrap;
+}
+
+function outputsFeedBlock(b) {
+  const wrap = h("div", { class: "block block-outputs-feed" });
+  wrap.appendChild(h("div", { class: "block-head" },
+    h("h3", { text: b.title || "Recent landings" }),
+    h("div", { class: "kicker", text: "→ ALL OUTPUTS" }),
+  ));
+  const list = h("div", { class: "outputs-list" });
+  for (const o of (TEND_DATA.automationOutputs || []).slice(0, 6)) {
+    const row = h("div", { class: "output-row kind-" + (o.kind || "") });
+    row.appendChild(h("span", { class: "or-when", text: o.when }));
+    row.appendChild(h("span", { class: "or-from", text: o.from }));
+    row.appendChild(h("span", { class: "or-what", text: o.what }));
+    row.appendChild(h("span", { class: "or-where", text: "→ " + o.where }));
+    list.appendChild(row);
+  }
+  wrap.appendChild(list);
+  return wrap;
+}
+
+/* ───── DATA LAYER ───── */
+function renderData() {
+  const wrap = h("div", { class: "data-page" });
+
+  const bar = h("div", { class: "connectors-bar" });
+  bar.appendChild(h("div", { class: "label", text: "CONNECTORS" }));
+  for (const c of TEND_DATA.connectors) {
+    const st = state.connectorStates[c.id] || c.state;
+    bar.appendChild(h("button", {
+      class: "connector-chip " + (st === "off" ? "off" : "on"),
+      onclick: () => toggleConnector(c.id),
+      title: "Click to " + (st === "on" ? "disable" : "enable"),
+    },
+      h("span", { class: "status-dot" }),
+      h("span", { text: c.label }),
+    ));
+  }
+  bar.appendChild(h("button", {
+    class: "connector-chip add",
+    onclick: () => {
+      const name = prompt("Connector name?");
+      if (!name) return;
+      const id = name.toLowerCase().replace(/\W+/g, "-");
+      TEND_DATA.connectors.push({ id, label: name, state: "on" });
+      state.connectorStates[id] = "on";
+      toast({ t: "CONNECTOR ADDED", m: `${name} connected. Tend will scan it on next sync.`, tone: "pos" });
+      render();
+    },
+  }, h("span", { text: "+ ADD" })));
+  wrap.appendChild(bar);
+
+  const body = h("div", { class: "data-body" });
+
+  // librarian chat pane
+  const chatPane = h("div", { class: "chat-pane" });
+  chatPane.appendChild(h("div", { class: "chat-head" },
+    h("div", { class: "session-meta" },
+      h("div", { class: "session-title", text: "Data librarian" }),
+      h("div", { class: "session-sub", text: "edits go through me · approvals on for writes" }),
+    ),
+  ));
+  const cbody = h("div", { class: "chat-body" });
+  const dataMessages = [
+    { role: "agent", time: "Wed 11:42", text: "I noticed your `vendors.md` still has the FlyLens entry from 2024. They've been out of business since fall. Want me to remove it and replace with the drone vendor decision once Q2 sourcing closes?" },
+    { role: "user", time: "Wed 11:43", text: "Yes. Hold the replace until I approve Skybridge." },
+    { role: "agent", time: "Wed 11:43", text: "Got it. Logged a pending edit on vendors.md — will execute once the Q2 vendor session reaches a decision." },
+    { role: "agent", time: "today 7:02", text: "Coverage on `competitors.md` is at 55% — I'd like to refresh by scanning Mueller & Co. and Threshold's recent listings. Approve a 1-time scan?" },
+  ];
+  for (const m of dataMessages) {
+    const msg = h("div", { class: "msg " + m.role });
+    msg.appendChild(h("div", { class: "who", text: (m.role === "user" ? "You" : "Librarian") + " · " + m.time }));
+    const bub = h("div", { class: "bubble" });
+    bub.innerHTML = inline(m.text);
+    msg.appendChild(bub);
+    cbody.appendChild(msg);
+  }
+  chatPane.appendChild(cbody);
+  const dInputWrap = h("div", { class: "chat-input" });
+  const dTa = h("textarea", { placeholder: "Ask the librarian (Enter to send)", rows: "1" });
+  const dSend = h("button", { class: "send", text: "SEND →" });
+  dInputWrap.appendChild(dTa);
+  dInputWrap.appendChild(dSend);
+  chatPane.appendChild(dInputWrap);
+  requestAnimationFrame(() => {
+    const fire = () => {
+      const v = dTa.value.trim();
+      dTa.value = "";
+      if (!v) return;
+      cbody.appendChild(h("div", { class: "msg user" },
+        h("div", { class: "who", text: "You · " + nowStamp() }),
+        h("div", { class: "bubble", text: v }),
+      ));
+      cbody.scrollTop = cbody.scrollHeight;
+      // typing
+      const typ = h("div", { class: "msg agent typing" },
+        h("div", { class: "who", text: "Librarian · thinking" }),
+        h("div", { class: "bubble" },
+          h("span", { class: "typing-dots" }, h("span", {}), h("span", {}), h("span", {})),
+        ),
+      );
+      cbody.appendChild(typ);
+      cbody.scrollTop = cbody.scrollHeight;
+      setTimeout(() => {
+        typ.remove();
+        cbody.appendChild(h("div", { class: "msg agent" },
+          h("div", { class: "who", text: "Librarian · " + nowStamp() }),
+          h("div", { class: "bubble", text: "Logged. I'll surface a pending edit on the relevant file and hold for your approval before writing." }),
+        ));
+        cbody.scrollTop = cbody.scrollHeight;
+        toast({ t: "LIBRARIAN", m: "Pending edit logged — held for approval.", tone: "warn" });
+      }, 800);
+    };
+    dTa.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); fire(); } });
+    dSend.addEventListener("click", fire);
+  });
+  body.appendChild(chatPane);
+
+  const divider = h("div", { class: "divider" });
+  body.appendChild(divider);
+
+  // MD pane
+  const mdPane = h("div", { class: "data-md" });
+  const mdHead = h("div", { class: "data-md-head" });
+  const tabs = h("div", { class: "data-md-tabs" });
+  for (const [name] of Object.entries(TEND_DATA.dataLayer)) {
+    const tabBtn = h("button", {
+      class: "md-tab" + (state.dataFile === name ? " active" : ""),
+      onclick: () => go({ dataFile: name }),
+      text: name,
+    });
+    if (state.dirtyFiles.has(name)) tabBtn.appendChild(h("span", { class: "dirty", title: "Recently edited" }));
+    tabs.appendChild(tabBtn);
+  }
+  mdHead.appendChild(tabs);
+  const isEditing = state.editingFile === state.dataFile;
+  if (isEditing) {
+    mdHead.appendChild(h("div", { class: "flex gap-8" },
+      h("button", { class: "btn-mini mono primary", text: "SAVE", onclick: saveEditFile }),
+      h("button", { class: "btn-mini mono ghost", text: "CANCEL", onclick: cancelEditFile }),
+    ));
+  } else {
+    mdHead.appendChild(h("div", { class: "flex gap-8" },
+      h("button", { class: "btn-mini mono", text: "EDIT", onclick: startEditFile }),
+      h("button", { class: "btn-mini mono", text: "EXPORT ZIP", onclick: () => toast({ t: "EXPORT", m: "Your 7-file data layer zipped to clipboard (mock).", tone: "pos" }) }),
+    ));
+  }
+  mdPane.appendChild(mdHead);
+
+  const file = TEND_DATA.dataLayer[state.dataFile];
+  const mdBody = h("div", { class: "data-md-body" });
+  mdBody.appendChild(h("div", { class: "file-meta" },
+    h("span", {}, document.createTextNode("FILE · "), h("strong", { text: state.dataFile })),
+    h("span", { text: "UPDATED · " + file.updated }),
+    h("span", { text: "COVERAGE · " + Math.round(file.coverage * 100) + "%" }),
+    isEditing ? h("span", { style: { color: "var(--accent)" }, text: "· EDITING" }) : null,
+  ));
+  if (isEditing) {
+    const ed = h("textarea", { class: "md-editor", spellcheck: "false" });
+    ed.value = state.fileBuffer[state.dataFile] ?? file.content;
+    ed.addEventListener("input", () => { state.fileBuffer[state.dataFile] = ed.value; });
+    mdBody.appendChild(ed);
+    requestAnimationFrame(() => ed.focus());
+  } else {
+    const docDiv = h("div", { class: "block-doc" });
+    docDiv.innerHTML = md(file.content);
+    mdBody.appendChild(docDiv);
+  }
+  mdPane.appendChild(mdBody);
+  body.appendChild(mdPane);
+
+  wrap.appendChild(body);
+
+  if (state.dataSplit != null) body.style.setProperty("--data-chat-w", state.dataSplit + "px");
+  requestAnimationFrame(() => enableHorizontalDrag(body, divider, "--data-chat-w", null, 380, l => {
+    state.dataSplit = l;
+  }));
+
+  return wrap;
+}
+
+/* ───── AUTOMATIONS ───── */
+function renderAutomations() {
+  const wrap = h("div", { class: "automations-page" });
+
+  if (state.automationDetail) return renderAutomationDetail(wrap);
+
+  const queueCount = TEND_DATA.approvalsQueue.filter(a => !state.dismissedApprovals.has(a.id)).length;
+  const outputCount = TEND_DATA.automationOutputs.length;
+
+  wrap.appendChild(h("div", { class: "meta meta-strip" },
+    h("strong", { text: "§ AUTOMATIONS" }),
+    h("span", { class: "sep", text: "/" }),
+    h("em", { text: TEND_DATA.automations.length + " ACTIVE" }),
+    h("span", { class: "sep", text: "/" }),
+    h("span", { text: queueCount + " gated · " + outputCount + " recent outputs" }),
+  ));
+
+  const title = h("h2", { class: "section-title" });
+  title.innerHTML = 'Your jobs, <span class="serif">on rails.</span>';
+  wrap.appendChild(title);
+  wrap.appendChild(h("p", { class: "section-sub", text: "Every automation is a sequence of steps Tend runs for you. Outputs land somewhere you can see. Approval gates pause for your call." }));
+
+  const tabBar = h("div", { class: "auto-tabs" });
+  const tabs = [
+    { id: "jobs", label: "JOBS", count: TEND_DATA.automations.length },
+    { id: "approvals", label: "APPROVALS", count: queueCount, tone: queueCount ? "warn" : "" },
+    { id: "outputs", label: "OUTPUT LOG", count: outputCount },
+  ];
+  for (const t of tabs) {
+    const btn = h("button", {
+      class: "auto-tab" + (state.autoTab === t.id ? " active" : "") + (t.tone ? " tone-" + t.tone : ""),
+      onclick: () => go({ autoTab: t.id }),
+    },
+      h("span", { class: "lbl", text: t.label }),
+      h("span", { class: "cnt", text: String(t.count) }),
+    );
+    tabBar.appendChild(btn);
+  }
+  wrap.appendChild(tabBar);
+
+  const body = h("div", { class: "auto-page-body" });
+  const left = h("div", { class: "auto-left" });
+
+  if (state.autoTab === "approvals") {
+    left.appendChild(renderApprovalsInboxFull());
+  } else if (state.autoTab === "outputs") {
+    left.appendChild(renderOutputsLogFull());
+  } else {
+    const list = h("div", { class: "auto-list" });
+    for (const a of TEND_DATA.automations) {
+      const isPaused = state.pausedAutomations.has(a.id);
+      const justRan = state.runFlash === a.id;
+      const row = h("button", {
+        class: "auto-row" + (isPaused ? " paused" : "") + (justRan ? " just-ran" : ""),
+        onclick: () => go({ automationDetail: a.id }),
+      });
+      row.appendChild(h("div", { class: "name" },
+        h("div", { class: "t", text: a.name }),
+        h("div", { class: "d", text: a.desc }),
+      ));
+      row.appendChild(h("div", { class: "schedule" },
+        h("span", { class: "k", text: "Schedule" }),
+        document.createTextNode(a.schedule),
+      ));
+      row.appendChild(h("div", { class: "output" },
+        h("span", { class: "k", text: "Produces" }),
+        h("div", { class: "v", text: a.produces || "—" }),
+        h("div", { class: "where", text: a.output ? "→ " + a.output.lands : "" }),
+      ));
+      row.appendChild(h("div", { class: "next" },
+        h("span", { class: "k", text: "Next" }),
+        document.createTextNode(isPaused ? "PAUSED" : a.next),
+      ));
+      row.appendChild(h("span", { class: "pill " + (isPaused ? "" : a.approvals ? "warn" : "pos"), text: isPaused ? "PAUSED" : a.approvals ? "GATED" : "AUTO" }));
+      list.appendChild(row);
+    }
+    left.appendChild(list);
+    left.appendChild(h("button", {
+      class: "auto-new",
+      onclick: () => {
+        const ta = document.querySelector(".keeper-input textarea");
+        if (ta) { ta.value = "Spawn a new automation that…"; ta.focus(); }
+        toast({ t: "KEEPER", m: "Tell the Keeper what to spawn — schedule, output, gate.", tone: "" });
+      },
+    },
+      h("span", { class: "plus", text: "+" }),
+      h("span", { text: "New automation · ask the Keeper" }),
+    ));
+  }
+
+  body.appendChild(left);
+  body.appendChild(renderKeeperPanel(null));
+  wrap.appendChild(body);
+  return wrap;
+}
+
+function renderApprovalsInboxFull() {
+  const wrap = h("div", { class: "approvals-inbox-full" });
+  const queue = TEND_DATA.approvalsQueue.filter(a => !state.dismissedApprovals.has(a.id));
+  if (!queue.length) {
+    wrap.appendChild(h("div", { class: "empty", text: "Inbox zero. Tend has nothing waiting on you." }));
+    return wrap;
+  }
+  for (const a of queue) {
+    const row = h("div", { class: "approval-row prio-" + (a.priority || "normal"), "data-id": a.id });
+    row.appendChild(h("div", { class: "ar-meta" },
+      h("span", { class: "from", text: a.from }),
+      h("span", { class: "since", text: a.waitingSince + " ago" }),
+    ));
+    row.appendChild(h("div", { class: "ar-title", text: a.title }));
+    row.appendChild(h("div", { class: "ar-preview", text: a.preview }));
+    row.appendChild(h("div", { class: "ar-actions" },
+      h("span", { class: "ar-channel", text: a.channel }),
+      h("button", { class: "btn-mini ghost", text: "HOLD", onclick: () => approveItem(a.id, "hold") }),
+      h("button", { class: "btn-mini ghost", text: "REJECT", onclick: () => approveItem(a.id, "reject") }),
+      h("button", { class: "btn-mini primary", text: "APPROVE →", onclick: () => approveItem(a.id, "approve") }),
+    ));
+    wrap.appendChild(row);
+  }
+  return wrap;
+}
+
+function renderOutputsLogFull() {
+  const wrap = h("div", { class: "outputs-log-full" });
+  const outs = TEND_DATA.automationOutputs;
+  if (!outs.length) {
+    wrap.appendChild(h("div", { class: "empty", text: "No automation outputs yet." }));
+    return wrap;
+  }
+  for (const o of outs) {
+    const row = h("div", { class: "output-row kind-" + (o.kind || "") });
+    row.appendChild(h("span", { class: "or-when", text: o.when }));
+    row.appendChild(h("span", { class: "or-from", text: o.from }));
+    row.appendChild(h("span", { class: "or-what", text: o.what }));
+    row.appendChild(h("span", { class: "or-where", text: "→ " + o.where }));
+    wrap.appendChild(row);
+  }
+  return wrap;
+}
+
+function renderKeeperPanel(automation) {
+  const panel = h("aside", { class: "keeper-panel" });
+  panel.appendChild(h("div", { class: "meta" },
+    h("strong", { text: "§ KEEPER" }),
+    h("span", { class: "sep", text: "/" }),
+    h("em", { text: "AUTOMATION SUB-AGENT" }),
+  ));
+  panel.appendChild(h("div", { class: "keeper-title", text: automation ? "Editing: " + automation.name : "Automation Keeper" }));
+  panel.appendChild(h("p", { class: "keeper-sub", text: automation
+    ? "Tell me what to change about this one. Schedule, recipients, voice, gates, output destination — all editable in plain English."
+    : "I run your automations. Ask me to spawn a new one, change a schedule, tweak voice, pause a job, or change where output lands." }));
+
+  const suggest = h("div", { class: "keeper-suggest" });
+  const suggestions = automation ? [
+    "Move this to weekly instead of monthly",
+    "Skip the approval gate for 5★ replies",
+    "Also CC my assistant on these sends",
+    "Pause until I tell you otherwise",
+  ] : [
+    "Spawn a quarterly check-in for past clients",
+    "Add a Tuesday vendor-status digest",
+    "Watch for new MLS listings in Mueller",
+    "Pause everything until Monday",
+  ];
+  for (const s of suggestions) {
+    const chip = h("button", { class: "keeper-chip", text: s });
+    chip.addEventListener("click", () => keeperChipClick(s, chip));
+    suggest.appendChild(chip);
+  }
+  panel.appendChild(suggest);
+
+  const chat = h("div", { class: "keeper-chat" });
+  chat.appendChild(h("div", { class: "k-msg" },
+    h("div", { class: "k-from", text: "Keeper" }),
+    h("div", { class: "k-bubble", text: automation
+      ? "Reading the spec for " + automation.name + ". Last run: " + automation.last + ". " + (automation.recentRuns?.length || 0) + " runs in history. What do you want to change?"
+      : TEND_DATA.automations.length + " automations running. " + (TEND_DATA.approvalsQueue.filter(a => !state.dismissedApprovals.has(a.id)).length) + " items in your approvals queue. What do you need?" }),
+  ));
+  panel.appendChild(chat);
+
+  const kInputWrap = h("div", { class: "keeper-input" });
+  const kTa = h("textarea", { rows: "1", placeholder: automation ? "Change anything about " + automation.name + "…" : "Ask the Keeper anything…" });
+  const kSend = h("button", { class: "send-mini", text: "→" });
+  kInputWrap.appendChild(kTa);
+  kInputWrap.appendChild(kSend);
+  panel.appendChild(kInputWrap);
+  requestAnimationFrame(() => wireKeeperInput(kTa, kSend));
+
+  return panel;
+}
+
+function renderAutomationDetail(wrap) {
+  const a = TEND_DATA.automations.find(x => x.id === state.automationDetail);
+  if (!a) { state.automationDetail = null; return renderAutomations(); }
+
+  wrap.appendChild(h("div", { class: "meta meta-strip" },
+    h("button", { class: "btn-mini mono", onclick: () => go({ automationDetail: null }), text: "← BACK" }),
+    h("strong", { text: "§ AUTOMATION" }),
+    h("span", { class: "sep", text: "/" }),
+    h("em", { text: a.name.toUpperCase() }),
+    h("span", { class: "sep", text: "/" }),
+    h("span", { text: a.desc }),
+  ));
+
+  const body = h("div", { class: "auto-page-body" });
+  const left = h("div", { class: "auto-left" });
+
+  left.appendChild(h("h2", { class: "section-title", text: a.name, style: { marginTop: "16px" } }));
+  left.appendChild(h("p", { class: "section-sub", text: a.desc }));
+
+  // schedule strip
+  const spec = h("div", { class: "block-spec", style: { "--spec-cols": "4", marginBottom: "20px" } });
+  [
+    { k: "Schedule", v: a.schedule, edit: true },
+    { k: "Last run", v: a.last, edit: false },
+    { k: "Next run", v: a.next, edit: false },
+    { k: "Status", v: a.status, edit: false },
+  ].forEach(c => {
+    const cell = h("div", { class: "cell" + (c.edit ? " is-edit" : "") },
+      h("div", { class: "k", text: c.k }),
+      h("div", { class: "v", text: c.v }),
+    );
+    if (c.edit) cell.appendChild(h("span", { class: "pencil", text: "✎" }));
+    spec.appendChild(cell);
+  });
+  left.appendChild(spec);
+
+  // Output
+  if (a.produces || a.output) {
+    left.appendChild(h("div", { class: "meta", style: { marginTop: "28px" } },
+      h("strong", { text: "§ OUTPUT" }),
+      h("span", { class: "sep", text: "/" }),
+      h("em", { text: "WHAT IT PRODUCES · WHERE IT LANDS" }),
+    ));
+    const outBlock = h("div", { class: "block-output" });
+    outBlock.appendChild(h("div", { class: "produces" },
+      h("div", { class: "lbl", text: "Produces" }),
+      h("div", { class: "val", text: a.produces || "—" }),
+    ));
+    if (a.output) {
+      const grid = h("div", { class: "output-spec" });
+      [
+        { k: "Channel", v: a.output.via },
+        { k: "Lands at", v: a.output.lands },
+        { k: "Kind", v: a.output.kind },
+        { k: "Volume", v: a.output.volume },
+      ].forEach(c => grid.appendChild(h("div", {},
+        h("div", { class: "k", text: c.k }),
+        h("div", { class: "v", text: c.v }),
+      )));
+      outBlock.appendChild(grid);
+    }
+    left.appendChild(outBlock);
+  }
+
+  // Sequence
+  left.appendChild(h("div", { class: "meta", style: { marginTop: "28px" } },
+    h("strong", { text: "§ SEQUENCE" }),
+    h("span", { class: "sep", text: "/" }),
+    h("em", { text: a.sequence.length + " STEPS" }),
+  ));
+  const seq = h("div", { class: "seq-map", style: { gridTemplateColumns: `repeat(${a.sequence.length}, 1fr)` } });
+  for (const st of a.sequence) {
+    seq.appendChild(h("div", { class: "seq-step" + (st.gate ? " gate" : "") },
+      h("div", { class: "n", text: st.n + (st.gate ? " · GATE" : "") }),
+      h("div", { class: "t", text: st.t }),
+      h("div", { class: "sub", text: st.sub }),
+    ));
+  }
+  left.appendChild(seq);
+
+  // Recent runs
+  if (a.recentRuns?.length) {
+    left.appendChild(h("div", { class: "meta", style: { marginTop: "28px" } },
+      h("strong", { text: "§ RUN HISTORY" }),
+      h("span", { class: "sep", text: "/" }),
+      h("em", { text: "LAST " + a.recentRuns.length + " RUNS" }),
+    ));
+    const tbl = h("table", { class: "block-table", style: { marginTop: "12px" } });
+    const thead = h("thead");
+    thead.appendChild(h("tr", {},
+      h("th", { text: "When" }), h("th", { text: "Outcome" }),
+      h("th", { text: "Artifact" }), h("th", { text: "Status" }),
+    ));
+    tbl.appendChild(thead);
+    const tbody = h("tbody");
+    for (const r of a.recentRuns) {
+      tbody.appendChild(h("tr", {},
+        h("td", { text: r.when }),
+        h("td", { text: r.outcome }),
+        h("td", {}, r.artifact ? h("span", { class: "mono", style: { fontSize: "11px", color: "var(--fg-mute)" }, text: r.artifact }) : document.createTextNode("—")),
+        h("td", {}, h("span", {
+          class: "pill " + (r.status === "complete" ? "pos" : r.status === "awaiting" ? "warn" : r.status === "held" ? "danger" : ""),
+          text: r.status.toUpperCase(),
+        })),
+      ));
+    }
+    tbl.appendChild(tbody);
+    left.appendChild(tbl);
+  }
+
+  // actions
+  const isPaused = state.pausedAutomations.has(a.id);
+  left.appendChild(h("div", { class: "flex gap-8", style: { marginTop: "28px", flexWrap: "wrap" } },
+    h("button", { class: "btn primary", text: "RUN NOW", onclick: () => runAutomationNow(a.id) }),
+    h("button", {
+      class: "btn ghost", text: "EDIT IN KEEPER →",
+      onclick: () => {
+        const ta = document.querySelector(".keeper-input textarea");
+        if (ta) { ta.value = "Change "; ta.focus(); }
+        toast({ t: "KEEPER", m: "Tell the Keeper what to change.", tone: "" });
+      },
+    }),
+    h("button", {
+      class: "btn ghost", text: isPaused ? "RESUME" : "PAUSE",
+      onclick: () => togglePauseAutomation(a.id),
+    }),
+  ));
+
+  body.appendChild(left);
+  body.appendChild(renderKeeperPanel(a));
+  wrap.appendChild(body);
+  return wrap;
+}
+
+/* ───── DASHBOARD ───── */
+function renderDashboard() {
+  const wrap = h("div", { class: "dashboard-page" });
+
+  wrap.appendChild(h("div", { class: "meta meta-strip" },
+    h("strong", { text: "§ DASHBOARD" }),
+    h("span", { class: "sep", text: "/" }),
+    h("em", { text: (state.viewingDay || TEND_DATA.tenant.today.toUpperCase()) }),
+    h("span", { class: "sep", text: "/" }),
+    h("span", { text: state.viewingDay ? "historical snapshot · read-only" : "your daily orientation" }),
+  ));
+
+  if (state.viewingDay) {
+    wrap.appendChild(h("div", { class: "viewing-past" },
+      h("span", { text: "VIEWING SNAPSHOT FROM " + state.viewingDay + " · read-only" }),
+      h("button", { class: "x", text: "RETURN TO TODAY", onclick: () => { state.viewingDay = null; render(); } }),
+    ));
+  }
+
+  const focusTake = (() => {
+    const f = state.greetingFocus;
+    if (!f) return 'Here\'s your day.';
+    if (f === "listings") return 'Listings are the focus.';
+    if (f === "clients") return 'Past clients are the focus.';
+    if (f === "field") return 'You\'re in the field.';
+    if (f === "admin") return 'Admin and ops only.';
+    return 'Here\'s your day.';
+  })();
+  const title = h("h2", { class: "section-title" });
+  title.innerHTML = 'Good morning, Sarah. <span class="serif">' + focusTake + '</span>';
+  wrap.appendChild(title);
+  wrap.appendChild(h("p", { class: "section-sub", text: "Snapshot rebuilt at 8:14 AM. Click any session below to jump into the room." }));
+
+  // live patch: approvals count reflects state
+  const liveBlocks = JSON.parse(JSON.stringify(TEND_DATA.dashboardBlocks));
+  const liveApprovals = TEND_DATA.approvalsQueue.filter(a => !state.dismissedApprovals.has(a.id)).length;
+  const kpiBlk = liveBlocks.find(b => b.type === "kpi");
+  if (kpiBlk) {
+    const ap = kpiBlk.items.find(x => /approval/i.test(x.k));
+    if (ap) ap.v = String(liveApprovals);
+    const runs = kpiBlk.items.find(x => /runs this week/i.test(x.k));
+    if (runs && state.recentRuns.length) runs.v = String(8 + state.recentRuns.length);
+  }
+  // live patch: run history adds user runs
+  const histBlk = liveBlocks.find(b => b.type === "table" && b.kicker && b.kicker.includes("§06"));
+  if (histBlk && state.recentRuns.length) {
+    histBlk.table.rows = state.recentRuns.map(r => [r.when, "Manual run", r.outcome, r.status === "complete" ? "Complete" : "Awaiting"]).concat(histBlk.table.rows).slice(0, 6);
+  }
+  const grid = h("div", { class: "dash-grid" });
+  for (const b of liveBlocks) {
+    const block = renderBlock(b);
+    block.classList.add("dash-w-" + (b.width || 12));
+    if (b.kicker || b.title) {
+      const meta = h("div", { class: "meta", style: { marginBottom: "12px" } },
+        h("strong", { text: b.kicker || "" }),
+        h("span", { class: "sep", text: "/" }),
+        h("em", { text: (b.title || "").toUpperCase() }),
+      );
+      block.insertBefore(meta, block.firstChild);
+    }
+    grid.appendChild(block);
+  }
+  wrap.appendChild(grid);
+
+  const verBox = h("div", { class: "versions" });
+  ["MAY 14", "MAY 15", "MAY 16", "MAY 17"].forEach(d => {
+    const isCurrent = state.viewingDay ? d === state.viewingDay : d === "MAY 17";
+    verBox.appendChild(h("button", {
+      class: "v" + (isCurrent ? " current" : ""),
+      text: d,
+      onclick: () => viewHistoryDay(d),
+    }));
+  });
+  wrap.appendChild(h("div", { class: "history-strip" },
+    h("span", { text: "DAILY SNAPSHOT · HISTORY" }),
+    verBox,
+  ));
+
+  return wrap;
+}
+
+/* ───── ACCOUNT ───── */
+function renderAccount() {
+  const wrap = h("div", { class: "account-page" });
+  wrap.appendChild(h("div", { class: "meta meta-strip" },
+    h("strong", { text: "§ ACCOUNT" }),
+    h("span", { class: "sep", text: "/" }),
+    h("em", { text: TEND_DATA.tenant.workspaceName.toUpperCase() }),
+    h("span", { class: "sep", text: "/" }),
+    h("span", { text: "billing · usage · workspace" }),
+  ));
+
+  wrap.appendChild(h("h2", { text: "Workspace & plan." }));
+
+  const identity = h("div", { class: "block-spec", style: { "--spec-cols": "3", marginBottom: "24px" } });
+  [
+    { k: "Workspace", v: TEND_DATA.tenant.workspaceName },
+    { k: "Owner", v: TEND_DATA.tenant.owner.name + " · " + TEND_DATA.tenant.owner.email },
+    { k: "License", v: "TX BR# 9-748202" },
+  ].forEach(c => identity.appendChild(h("div", { class: "cell" },
+    h("div", { class: "k", text: c.k }),
+    h("div", { class: "v", text: c.v }),
+  )));
+  wrap.appendChild(identity);
+
+  wrap.appendChild(h("div", { class: "block-head" },
+    h("h3", { text: "Plan" }),
+    h("div", { class: "kicker", text: "→ ACTIVE" }),
+  ));
+  const plan = h("div", { class: "block-spec", style: { "--spec-cols": "4", marginBottom: "24px" } });
+  [
+    { k: "Tier", v: TEND_DATA.account.plan },
+    { k: "Price", v: TEND_DATA.account.price },
+    { k: "Renews", v: TEND_DATA.account.renews },
+    { k: "Seats", v: TEND_DATA.account.seats },
+  ].forEach(c => plan.appendChild(h("div", { class: "cell" },
+    h("div", { class: "k", text: c.k }),
+    h("div", { class: "v", text: c.v }),
+  )));
+  wrap.appendChild(plan);
+
+  wrap.appendChild(h("div", { class: "block-head" },
+    h("h3", { text: "Usage" }),
+    h("div", { class: "kicker", text: "→ THIS CYCLE" }),
+  ));
+  const usage = h("div", { class: "block-kpi", style: { marginBottom: "24px", "--kpi-cols": "3" } });
+  [
+    { k: "Storage", v: TEND_DATA.account.storage.used, delta: "of " + TEND_DATA.account.storage.quota },
+    { k: "Support calls", v: TEND_DATA.account.supportCalls.used + "/" + TEND_DATA.account.supportCalls.included, delta: "included monthly" },
+    { k: "Next invoice", v: TEND_DATA.account.nextInvoice.split(" · ")[1], delta: TEND_DATA.account.nextInvoice.split(" · ")[0] },
+  ].forEach(it => usage.appendChild(h("div", { class: "cell" },
+    h("div", { class: "k", text: it.k }),
+    h("div", { class: "v", text: it.v }),
+    it.delta ? h("div", { class: "delta", text: it.delta }) : null,
+  )));
+  wrap.appendChild(usage);
+
+  wrap.appendChild(h("div", { class: "flex gap-8", style: { flexWrap: "wrap" } },
+    h("button", { class: "btn primary", text: "EXPORT WORKSPACE ZIP", onclick: () => toast({ t: "EXPORT", m: "Full workspace zip queued. Email when ready.", tone: "pos" }) }),
+    h("button", { class: "btn ghost", text: "MANAGE BILLING", onclick: () => toast({ t: "BILLING", m: "Opening Stripe customer portal (mock).", tone: "" }) }),
+    h("button", { class: "btn ghost", text: "INVITE SEAT", onclick: () => toast({ t: "SOLO", m: "Solo is 1-seat. Upgrade to Business to add seats.", tone: "warn" }) }),
+    h("button", { class: "btn ghost", text: "REQUEST SUPPORT CALL", onclick: () => toast({ t: "SUPPORT", m: "Calendly link sent. You have 1 of 2 calls remaining this cycle.", tone: "pos" }) }),
+  ));
+
+  return wrap;
+}
+
+/* ───── WELCOME OVERLAY ───── */
+function renderWelcomeOverlay() {
+  const overlay = h("div", { class: "welcome-overlay" });
+  const card = h("div", { class: "welcome-card" });
+
+  const steps = [
+    {
+      meta: "§ DAILY WELCOME · STEP 01 OF 03",
+      title: "Pick today's focus.",
+      sub: "I'll bias today's snapshot and which sessions surface to the top accordingly. You can switch any time.",
+      options: [
+        { id: "listings", icon: "→", t: "Listing pipeline", d: "Pre-launch, comps, vendor coordination" },
+        { id: "clients", icon: "→", t: "Past clients", d: "Reactivation, anniversary, retention" },
+        { id: "field", icon: "→", t: "Field day", d: "Showings, walkthroughs, on-the-go" },
+        { id: "admin", icon: "→", t: "Admin & ops", d: "Approvals, vendor decisions, billing" },
+      ],
+      key: "focus",
+    },
+    {
+      meta: "§ DAILY WELCOME · STEP 02 OF 03",
+      title: "Energy check.",
+      sub: "Honest answer is fine — I'll shorten the queue if you're tight on bandwidth.",
+      options: [
+        { id: "full", icon: "→", t: "Full bandwidth", d: "Bring me everything" },
+        { id: "half", icon: "→", t: "Half day", d: "Only what needs me today" },
+        { id: "thin", icon: "→", t: "Thin slice", d: "Just the decisions, nothing else" },
+      ],
+      key: "energy",
+    },
+    {
+      meta: "§ DAILY WELCOME · STEP 03 OF 03",
+      title: "Anything on your mind I should know?",
+      sub: "Optional. Free-text. I'll factor it into how I prioritize today.",
+      key: "context",
+      free: true,
+    },
+  ];
+
+  const step = steps[state.welcomeStep];
+  card.appendChild(h("div", { class: "step-meta", text: step.meta }));
+  card.appendChild(h("h2", { text: step.title }));
+  card.appendChild(h("p", { class: "sub", text: step.sub }));
+
+  if (step.free) {
+    card.appendChild(h("textarea", {
+      class: "free-input",
+      placeholder: "e.g. nervous about the Tom Miller listing comp, want to think through pricing first…",
+    }));
+  } else {
+    const opts = h("div", { class: "options" });
+    for (const o of step.options) {
+      const selected = state.welcomeAnswers[step.key] === o.id;
+      opts.appendChild(h("button", {
+        class: "option" + (selected ? " selected" : ""),
+        onclick: () => {
+          state.welcomeAnswers[step.key] = o.id;
+          render();
+        },
+      },
+        h("span", { class: "icon mono", text: o.icon }),
+        h("div", {},
+          h("div", { class: "t", text: o.t }),
+          h("div", { class: "d", text: o.d }),
+        ),
+      ));
+    }
+    card.appendChild(opts);
+  }
+
+  const navRow = h("div", { class: "nav-row" });
+  const pips = h("div", { class: "progress" });
+  for (let i = 0; i < steps.length; i++) {
+    pips.appendChild(h("div", { class: "pip" + (i <= state.welcomeStep ? " active" : "") }));
+  }
+  navRow.appendChild(pips);
+  const navButtons = h("div", { class: "flex gap-8" });
+  if (state.welcomeStep > 0) {
+    navButtons.appendChild(h("button", {
+      class: "btn ghost",
+      text: "BACK",
+      onclick: () => { state.welcomeStep--; render(); },
+    }));
+  }
+  navButtons.appendChild(h("button", {
+    class: "btn ghost",
+    text: "SKIP",
+    onclick: () => {
+      state.welcomeShown = true;
+      localStorage.setItem("tend.welcomeDone", new Date().toDateString());
+      $(".welcome-overlay")?.remove();
+    },
+  }));
+  if (state.welcomeStep < steps.length - 1) {
+    navButtons.appendChild(h("button", {
+      class: "btn primary",
+      text: "NEXT →",
+      onclick: () => { state.welcomeStep++; render(); },
+    }));
+  } else {
+    navButtons.appendChild(h("button", {
+      class: "btn primary",
+      text: "BUILD MY DAY →",
+      onclick: () => {
+        // capture free-text if present
+        const freeTa = card.querySelector(".free-input");
+        if (freeTa) state.welcomeAnswers.context = freeTa.value;
+        state.greetingFocus = state.welcomeAnswers.focus || null;
+        state.welcomeShown = true;
+        localStorage.setItem("tend.welcomeDone", new Date().toDateString());
+        $(".welcome-overlay")?.remove();
+        const focusName = ({ listings: "Listings", clients: "Past clients", field: "Field day", admin: "Admin & ops" })[state.greetingFocus] || "today";
+        toast({ t: "DAY BUILT", m: `Snapshot biased for ${focusName}. ${state.welcomeAnswers.energy === "thin" ? "Queue trimmed." : "Full queue surfaced."}`, tone: "pos" });
+        render();
+      },
+    }));
+  }
+  navRow.appendChild(navButtons);
+  card.appendChild(navRow);
+
+  overlay.appendChild(card);
+  return overlay;
+}
+
+/* ════════════════════════════════════════════════════════════
+   DRAG (column resizer)
+   ════════════════════════════════════════════════════════════ */
+function enableHorizontalDrag(container, handle, leftVar, rightVar, fixedLeft, onChange) {
+  let dragging = false;
+  let lastLeft = null, lastRight = null;
+  handle.addEventListener("mousedown", (e) => {
+    dragging = true;
+    document.body.style.cursor = "col-resize";
+    e.preventDefault();
+  });
+  document.addEventListener("mousemove", (e) => {
+    if (!dragging) return;
+    const rect = container.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const total = rect.width;
+    const min = 280;
+    const left = Math.max(min, Math.min(total - min - 6, x));
+    lastLeft = left;
+    if (fixedLeft != null) {
+      container.style.setProperty(leftVar, left + "px");
+    } else {
+      const right = total - left - 6;
+      lastRight = right;
+      container.style.setProperty(leftVar, left + "px");
+      if (rightVar) container.style.setProperty(rightVar, right + "px");
+    }
+  });
+  document.addEventListener("mouseup", () => {
+    if (dragging) {
+      dragging = false;
+      document.body.style.cursor = "";
+      if (onChange && lastLeft != null) onChange(lastLeft, lastRight);
+    }
+  });
+}
+
+/* ════════════════════════════════════════════════════════════
+   BOOT
+   ════════════════════════════════════════════════════════════ */
+render();
+</script>
+</body>
+</html>
